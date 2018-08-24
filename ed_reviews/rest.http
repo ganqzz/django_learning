@@ -1,0 +1,16 @@
+### GET Auth error 401
+
+GET http://localhost:8888/api/v2/courses/
+
+### GET from non-super
+
+GET http://localhost:8888/api/v2/courses/
+Authorization: Token f4b25435dfdd5665aa584f8bcfbf0ed15ebdfba7
+
+### GET from super
+
+GET http://localhost:8888/api/v2/courses/
+Authorization: Token 116828e883d542de79ce8c7d93ef7c3f0abf8b92
+
+###
+

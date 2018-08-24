@@ -1,0 +1,42 @@
+{% extends "courses/layout.html" %}
+{% load humanize course_extras %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+  <div class="row columns">
+    {{ block.super }}
+    <article>
+      <h1 class="">{{ course.title }}</h1>
+
+      <div class="callout secondary">
+        {{ course.description|markdown_to_html }}
+      </div>
+
+      {#    <p>There are#}
+      {#      {{ course.step_set.all|length }}#}
+      {#      {{ course.step_set.count|apnumber }}#}
+      {#      step{{ course.step_set.count|pluralize }} in this#}
+      {#      course: {{ course.step_set.all | join:", " }}</p>#}
+
+      <dl>
+        {% for step in steps %}
+          <dt>
+            <a href="{{ step.get_absolute_url }}">{{ step.title }}</a>
+          </dt>
+          <dd>{{ step.description|markdown_to_html }}</dd>
+          {% if step.question_set.all %}
+            <dt>Total Questions</dt>
+            <dd>{{ step.question_set.count }}</dd>
+          {% endif %}
+        {% endfor %}
+      </dl>
+
+      <p>Created on: {{ course.created_at|date:"F j, Y" }}</p>
+    </article>
+    {% if user.is_authenticated %}
+      <hr/>
+      <a href="{% url 'courses:create-quiz' course_pk=course.pk %}" class="button">New Quiz</a>
+    {% endif %}
+  </div>
+{% endblock %}

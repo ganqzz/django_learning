@@ -1,0 +1,13 @@
+/.idea
+/.vscode
+/env
+/venv
+/out
+*.pyc
+__pycache__
+.mypy_cache
+htmlcov
+.coverage
+db.sqlite3
+
+!.gitkeep
