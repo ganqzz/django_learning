@@ -4,14 +4,26 @@ Django
 Commands
 ---
 
-- Create project
+- Virtual environment
 ```
 cd <repository_root>
+
+# Linux (bash)
+python3 -m venv env
+source env/bin/activate
+
+# Windows (PowerShell)
 python -m venv env
 env/Scripts/Activate.ps1
-pip install django
 
-django-admin startproject <project>
+- Install Django
+```
+pip install django
+```
+
+- Create project
+```
+django-admin startproject <project> [<base_dir>]
 ```
 
 - Run local server
