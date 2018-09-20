@@ -4,7 +4,7 @@ from rest_framework import generics, status
 from rest_framework import mixins
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.reverse import reverse
@@ -79,10 +79,7 @@ class RetrieveUpdateDestroyReview(generics.RetrieveUpdateDestroyAPIView):
 
 class IsSuperUser(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
-        else:
-            return False
+        return request.user.is_superuser
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -93,7 +90,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
 
-    @detail_route(methods=['get'])
+    @action(methods=['get'], detail=True)
     def reviews(self, request, pk=None):
         self.pagination_class.page_size = 1
         reviews = models.Review.objects.filter(course_id=pk)

@@ -92,19 +92,54 @@ ganq: hawkeye1
 
 - Customizing Admin site
    * match namespaces to original admin site
-         copy from Django source
+        copy from Django source
+
+- Restrict access
+    * IP filter by Proxy/Web server
+    * rename the url "/admin/" to "/akfggegjpwej/"
 
 
-Test
-----
+Debug Toolbar
+---
 
+``` settings.py
+INSTALLED_APPS = [
+    ...,
+    'debug_toolbar',
+]
+
+MIDDLEWARE = [
+    ...,
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
 ```
-python manage.py test -v 2
+
+Testing
+---
+
+- unittest.TestCase
+- django.test
+    * SimpleTestCase
+    * TransactionTestCase
+    * TestCase
+    * LiveServerTestCase, StaticLiveServerTestCase
+
+``` test
+python manage.py test
+python manage.py test -v 2  # verbosity level
+python manage.py test <app.package.module.class.method>
+python manage.py test --tag=<tag>
+```
+
+``` coverage
+coverage run manage.py test
+coverage report
 coverage report -m
 coverage html
 ```
 
 - nose
+
 ``` settings.py
 INSTALLED_APPS = [
     ...,
@@ -120,21 +155,5 @@ NOSE_ARGS = [
     '--cover-erase',
     '--cover-inclusive',
     '--cover-package=games',
-]
-```
-
-
-Debug Toolbar
----
-
-``` settings.py
-INSTALLED_APPS = [
-    ...,
-    'debug_toolbar',
-]
-
-MIDDLEWARE = [
-    ...,
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 ```

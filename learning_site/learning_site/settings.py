@@ -127,6 +127,7 @@ STATICFILES_DIRS = [
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'suggestions')
 
+# Debug Toolbar
 INTERNAL_IPS = ['127.0.0.1', '::1', ]
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda x: True

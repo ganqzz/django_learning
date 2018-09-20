@@ -9,6 +9,7 @@
 - Built-in
     * django.contrib.auth.urls
     * LoginView, LogoutView
+    * default login template => registration/login.html
     * settings.
         LOGIN_REDIRECT_URL
         LOGOUT_REDIRECT_URL

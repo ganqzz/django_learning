@@ -1,24 +1,25 @@
+from unittest.mock import patch
+
+from django.db.models.aggregates import Count
 from django.test import SimpleTestCase, TestCase
+from django.test import tag
 from django.test.client import RequestFactory
 from django.urls.base import reverse
-from django.test import tag
-from .views import TemplateHelloPerson, BookmarkViewSet
-from rest_framework.test import APIClient
-from .models import Bookmark, Note, Comment, Like
 from django.utils.six import BytesIO
-from rest_framework.parsers import JSONParser
-from django.db.models.aggregates import Count
-from rest_framework.test import APIRequestFactory
-from unittest.mock import patch, Mock
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import JSONParser
+from rest_framework.test import APIClient
+from rest_framework.test import APIRequestFactory
+
+from .models import Bookmark, Note, Comment, Like
+from .views import TemplateHelloPerson, BookmarkViewSet
 
 
 # Create your tests here.
 
 
+@tag('integration_test')
 class ITTest_TemplateHelloPerson(SimpleTestCase):
-    @tag('integration_test')
     def test_render(self):
         response = self.client.get(
             reverse('hello-view3', kwargs={'name': 'Allan'}), follow=True
@@ -34,6 +35,7 @@ class ITTest_TemplateHelloPerson(SimpleTestCase):
         )
 
 
+@tag('unit_test')
 class UTTest_TemplateHelloPerson(SimpleTestCase):
     def setUp(self):
         super().setUp()
@@ -41,11 +43,9 @@ class UTTest_TemplateHelloPerson(SimpleTestCase):
         self.view = TemplateHelloPerson()
         self.view = setup_view_test(self.view, self.request)
 
-    @tag('unit_test')
     def test_class_attributes(self):
         self.assertEqual(self.view.template_name, 'locations/hello.html')
 
-    @tag('unit_test')
     def test_get_context_data(self):
         self.view.kwargs['name'] = 'Fred'
         context = self.view.get_context_data()

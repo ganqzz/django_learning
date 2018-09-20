@@ -1,4 +1,8 @@
-from django.core.urlresolvers import reverse
+"""
+TODO: 修正: Django Basics後のモデル変更に対応していない。
+"""
+
+from django.urls import reverse
 from django.test import TestCase
 from django.utils import timezone
 

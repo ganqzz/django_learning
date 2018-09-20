@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
-app_name ='courses'  # >= 2.0
+app_name = 'courses'  # >= 2.0
 
 # 順番に注意：詳細度が高いものを先に
 urlpatterns = [

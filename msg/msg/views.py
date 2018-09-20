@@ -7,6 +7,6 @@ class Home(TemplateView):
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return HttpResponseRedirect(reverse("posts:all"))
         return super().get(request, *args, **kwargs)

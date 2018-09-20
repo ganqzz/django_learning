@@ -100,18 +100,12 @@ class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PlayerScoreFilter(filters.FilterSet):
-    min_score = NumberFilter(
-        name='score', lookup_expr='gte')
-    max_score = NumberFilter(
-        name='score', lookup_expr='lte')
-    from_score_date = DateTimeFilter(
-        name='score_date', lookup_expr='gte')
-    to_score_date = DateTimeFilter(
-        name='score_date', lookup_expr='lte')
-    player_name = AllValuesFilter(
-        name='player__name')
-    game_name = AllValuesFilter(
-        name='game__name')
+    min_score = NumberFilter(name='score', lookup_expr='gte')
+    max_score = NumberFilter(name='score', lookup_expr='lte')
+    from_score_date = DateTimeFilter(name='score_date', lookup_expr='gte')
+    to_score_date = DateTimeFilter(name='score_date', lookup_expr='lte')
+    player_name = AllValuesFilter(name='player__name')
+    game_name = AllValuesFilter(name='game__name')
 
     class Meta:
         model = PlayerScore

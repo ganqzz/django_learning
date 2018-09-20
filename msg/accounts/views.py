@@ -6,7 +6,7 @@ from django.views import generic
 from . import forms
 
 
-# not in use
+# custom LoginView
 class LoginView(generic.FormView):
     form_class = AuthenticationForm
     success_url = reverse_lazy("posts:all")
@@ -22,7 +22,7 @@ class LoginView(generic.FormView):
         return super().form_valid(form)
 
 
-#  not in use
+# custom LogoutView
 class LogoutView(generic.RedirectView):
     url = reverse_lazy("home")
 

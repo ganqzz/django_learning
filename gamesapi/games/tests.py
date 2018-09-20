@@ -1,8 +1,8 @@
-from django.test import TestCase
 from django.urls import reverse
 from django.utils.http import urlencode
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from .models import GameCategory
 from .models import Player
 
@@ -86,7 +86,7 @@ class GameCategoryTests(APITestCase):
 
     def test_retrieve_game_categories_list(self):
         """
-        Ensure we can retrieve a game cagory
+        Ensure we can retrieve a game category
         """
         new_game_category_name = 'New Game Category'
         self.create_game_category(new_game_category_name)

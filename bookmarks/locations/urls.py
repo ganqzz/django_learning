@@ -19,7 +19,7 @@ urlpatterns = [
     path('hello2/<str:name>/', SimpleHelloPerson.as_view(), name='hello-view2'),
     path('hello3/<str:name>/', TemplateHelloPerson.as_view(), name='hello-view3'),
     path('hello_api/<str:name>/', SimpleHelloWorldAPI.as_view(), name='hello-api'),
-    re_path(r'^', include(router.urls)),
+    re_path(r'', include(router.urls)),
 ]
 
 standardview_urlpatterns = [

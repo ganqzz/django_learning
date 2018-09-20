@@ -5,6 +5,6 @@ class PageTitleMixin:
         return self.page_title
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)  # mro
         context['page_title'] = self.get_page_title()
         return context

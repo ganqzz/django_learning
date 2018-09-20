@@ -97,6 +97,7 @@ class BookmarkDetailView(APIView):
     Retrieve, update or delete a bookmark.
     """
 
+    # get_object_or_404
     def get_object(self, pk):
         try:
             return Bookmark.objects.get(pk=pk)
