@@ -3,6 +3,7 @@
 - Django TestCase classes
 - Unit test / Integration test
 - UI test (selenium)
+- django-widget-tweaks
 
 
 ## changes from original

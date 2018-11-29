@@ -1,3 +1,5 @@
 from django.db import models
 
-# Create your models here.
+
+class DtDemo(models.Model):
+    dt = models.DateTimeField(auto_now_add=True)

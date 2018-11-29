@@ -5,11 +5,11 @@
 /.venv/
 /out
 *.py[cod]
-__pycache__
+__pycache__/
 .mypy_cache
 *.log
 .env
-htmlcov
+htmlcov/
 .coverage
 db.sqlite3
 

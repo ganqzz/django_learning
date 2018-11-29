@@ -37,7 +37,7 @@ class CourseSerializer(serializers.ModelSerializer):
         read_only=True,
         view_name='apiv2:review-detail'  # ViewSetによる自動
     )
-    average_rating = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField()  # get_average_rating()
 
     class Meta:
         fields = (

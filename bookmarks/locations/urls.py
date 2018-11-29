@@ -42,6 +42,4 @@ standardview_urlpatterns = [
     ),
 ]
 
-standardview_urlpatterns = format_suffix_patterns(standardview_urlpatterns)
-
-urlpatterns += standardview_urlpatterns
+urlpatterns += format_suffix_patterns(standardview_urlpatterns)

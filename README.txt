@@ -34,9 +34,8 @@ python manage.py runserver [0:8080]  # default => 127.0.0.1:8000
 - Run shell
 ```
 python manage.py shell
-
-- django-extensions
-python manage.py shell_plus
+python manage.py shell_plus  # django-extensions
+python manage.py dbshell  # DB cmdline client (sqlite3, mysql, psql, ...)
 ```
 
 - Compatibility check
@@ -49,6 +48,7 @@ python -Wd manage.py
 cd <project>
 python manage.py startapp <app>
 ```
+
 
 Model and Migration
 ---
@@ -64,6 +64,7 @@ python manage.py sqlmigrate <app_label> <migration_name>
 python manage.py migrate
 python manage.py showmigrations
 ```
+
 
 Django Command
 ---
@@ -114,6 +115,7 @@ MIDDLEWARE = [
 ]
 ```
 
+
 Testing
 ---
 
@@ -136,24 +138,4 @@ coverage run manage.py test
 coverage report
 coverage report -m
 coverage html
-```
-
-- nose
-
-``` settings.py
-INSTALLED_APPS = [
-    ...,
-    'django_nose',
-]
-
-...
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-erase',
-    '--cover-inclusive',
-    '--cover-package=games',
-]
 ```

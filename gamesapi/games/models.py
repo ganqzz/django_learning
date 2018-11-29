@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -13,7 +14,7 @@ class GameCategory(models.Model):
 
 class Game(models.Model):
     owner = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         related_name='games',
         on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

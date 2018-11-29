@@ -101,8 +101,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             serializer = serializers.ReviewSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = serializers.ReviewSerializer(
-            reviews, many=True)
+        serializer = serializers.ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
 
