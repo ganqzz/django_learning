@@ -26,7 +26,7 @@ class BookmarkManualSerializer(Serializer):
 class CommentSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ['url', 'id', 'bookmark', 'time', 'text']
+        fields = ('url', 'id', 'bookmark', 'time', 'text',)
 
 
 class CommentSerializerWithLikes(HyperlinkedModelSerializer):
@@ -34,19 +34,19 @@ class CommentSerializerWithLikes(HyperlinkedModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['url', 'id', 'bookmark', 'time', 'text', 'num_likes']
+        fields = ('url', 'id', 'bookmark', 'time', 'text', 'num_likes',)
 
 
 class NoteSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Note
-        fields = ['url', 'id', 'bookmark', 'time', 'text']
+        fields = ('url', 'id', 'bookmark', 'time', 'text',)
 
 
 class BookmarkSerializer(ModelSerializer):
     class Meta:
         model = Bookmark
-        fields = ['id', 'link']
+        fields = ('id', 'link',)
 
 
 class BookmarkLinkSerializer(HyperlinkedModelSerializer):
@@ -56,4 +56,4 @@ class BookmarkLinkSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Bookmark
-        fields = ['url', 'id', 'link', 'comments', 'notes', 'num_likes']
+        fields = ('url', 'id', 'link', 'comments', 'notes', 'num_likes',)

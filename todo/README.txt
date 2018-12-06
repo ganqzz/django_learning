@@ -6,7 +6,7 @@
 - django-widget-tweaks
 
 
-## changes from original
+## changes from the original
 
 - Python: 2.x -> 3.x
 - Django: 1.x -> 2.x

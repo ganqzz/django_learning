@@ -18,7 +18,7 @@ class TopView(APIView):
         return Response({
             'course_list': reverse('course_list_low', request=request),
             'api_v1_courses': reverse('courses:course_list', request=request),
-            'ap1_v2': reverse('apiv2:course-list', request=request),
+            'ap1_v2': reverse('apiv2:api-root', request=request),
         })
 
 
@@ -83,6 +83,7 @@ class IsSuperUser(permissions.BasePermission):
 
 
 class CourseViewSet(viewsets.ModelViewSet):
+    """Create, Retrieve, Update, Delete, List"""
     permission_classes = (
         IsSuperUser,
         permissions.DjangoModelPermissions,
@@ -92,8 +93,9 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True)
     def reviews(self, request, pk=None):
+        """ネストに対しては、default paginatorは適用されないので、カスタムで行う必要がある"""
         self.pagination_class.page_size = 1
-        reviews = models.Review.objects.filter(course_id=pk)
+        reviews = models.Review.objects.filter(course_id=pk).order_by('-created_at')
 
         page = self.paginate_queryset(reviews)
 
@@ -110,5 +112,6 @@ class ReviewViewSet(mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     viewsets.GenericViewSet):
+    """Create, Retrieve, Update, Delete, except List"""
     queryset = models.Review.objects.all()
     serializer_class = serializers.ReviewSerializer

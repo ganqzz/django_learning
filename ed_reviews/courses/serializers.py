@@ -28,9 +28,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    href = serializers.HyperlinkedIdentityField(
+        view_name='apiv2:course-detail')
+    # reviews = ReviewSerializer(many=True, read_only=True)
     # reviews = serializers.PrimaryKeyRelatedField(
     #     many=True,
-    #     read_only=True,
+    #     read_only=True
     # )
     reviews = serializers.HyperlinkedRelatedField(
         many=True,
@@ -42,8 +45,9 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'id',
+            'href',
             'title',
-            'url',
+            'url',  # hyperlinked identity field ではない
             'reviews',
             'average_rating',
         )

@@ -44,7 +44,7 @@ class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
 class GameSerializer(serializers.HyperlinkedModelSerializer):
     # We just want to display the owner username (read-only)
     owner = serializers.ReadOnlyField(source='owner.username')
-    # We want to display the game cagory's name instead of the id
+    # We want to display the game category's name instead of the id
     game_category = serializers.SlugRelatedField(queryset=GameCategory.objects.all(), slug_field='name')
 
     class Meta:

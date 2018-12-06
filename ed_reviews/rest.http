@@ -1,16 +1,36 @@
-### GET Auth error 401
+### GET Auth error 401 Unauthorized
 
 GET http://localhost:5678/api/v2/courses/
 
-### GET from non-super
+### GET from non-super 403 Forbidden
 
 GET http://localhost:5678/api/v2/courses/
 Authorization: Token f4b25435dfdd5665aa584f8bcfbf0ed15ebdfba7
 
-### GET from super
+### GET from super 200 OK
 
 GET http://localhost:5678/api/v2/courses/
 Authorization: Token 116828e883d542de79ce8c7d93ef7c3f0abf8b92
 
 ###
 
+POST http://localhost:5678/api/v2/reviews/
+Authorization: Token 116828e883d542de79ce8c7d93ef7c3f0abf8b92
+
+{"course":2,"name":"Hoge","email":"hoge@hoge.com","rating":4}
+
+###
+
+POST http://localhost:5678/api/v2/reviews/
+Authorization: Token 116828e883d542de79ce8c7d93ef7c3f0abf8b92
+
+{"course":2,"name":"Fuga","email":"fuga@fuga.com","rating":1}
+
+###
+
+PATCH http://localhost:5678/api/v2/reviews/4/
+Authorization: Token 116828e883d542de79ce8c7d93ef7c3f0abf8b92
+
+{"rating":2}
+
+###

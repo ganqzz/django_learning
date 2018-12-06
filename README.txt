@@ -49,6 +49,12 @@ cd <project>
 python manage.py startapp <app>
 ```
 
+``` settings.py
+INSTALLED_APPS = [
+    ...,
+    '<app>',
+]
+```
 
 Model and Migration
 ---
@@ -58,9 +64,9 @@ Model and Migration
    dbファイルとmigrationファイルを削除して作り直す。
 - create models
 ```
-python manage.py makemigrations [<app_label>]
+python manage.py makemigrations [<app>]
 python manage.py showmigrations
-python manage.py sqlmigrate <app_label> <migration_name>
+python manage.py sqlmigrate <app> <migration_name>  # show sql
 python manage.py migrate
 python manage.py showmigrations
 ```
@@ -69,15 +75,23 @@ python manage.py showmigrations
 Django Command
 ---
 
-``` management/commands/hello_command.py
+``` <app>/management/commands/hello_command.py
 python manage.py hello_command
 ```
 
-Import/Export
+
+Fixtures
+---
+
+- Export
+```
+python manage.py dumpdata --format json -o fixtures.json <app.model> ...
+python manage.py dumpdata --indent 2 -o users.json auth.User
+```
+
+- Import
 ```
 python manage.py loaddata fixtures.json
-python manage.py dumpdata --format json -o fixtures.json <app_label[.ModelName]>
-python manage.py dumpdata --indent 2 -o users.json auth.User
 ```
 
 
