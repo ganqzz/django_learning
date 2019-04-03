@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'(?P<quiz_pk>\d+)/edit-question/(?P<question_pk>\d+)/$', views.edit_question,
         name="edit-question"),
     # url(r'(?P<question_pk>\d+)/create-answer/$', views.create_answer, name="create-answer"),
-    # url(r'(?P<question_pk>\d+)/edit-answer/(?P<answer_pk>\d+)/$', views.edit_answer,
+    # url(r'(?P<question_pk>\d+)/edit-answer/(?P<answer_pk>\d+)/$', views.edit-answer,
     #     name="edit-answer"),
     url(r'(?P<question_pk>\d+)/answers/$', views.answer_form, name="answers"),
     url(r'by/(?P<teacher>[-\w]+)/$', views.courses_by_teacher, name="by-teacher"),

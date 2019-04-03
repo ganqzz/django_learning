@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django.contrib.humanize',  # added
-    'debug_toolbar',
     'courses',
+
+    # dev only
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [

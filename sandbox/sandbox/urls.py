@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from . import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('sbxapp.urls')),
+    path('', views.top, name='top'),
+    path('app/', include('sbxapp.urls')),
+    path('hashing/', include('hashing.urls')),
+    path('pizza/', include('pizza.urls')),
 ]

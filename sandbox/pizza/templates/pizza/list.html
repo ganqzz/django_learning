@@ -1,0 +1,14 @@
+{% extends 'pizza/base.html' %}
+{% block content %}
+  <h1>Pizza Order List</h1>
+
+  {% for order in orders %}
+    <div>
+      <a href="{% url 'pizza:detail' pk=order.pk %}">{{ order }}</a>
+      <form method="post" action="{% url 'pizza:delete' pk=order.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete" onclick="return confirm('Delete?');">
+      </form>
+    </div>
+  {% endfor %}
+{% endblock %}

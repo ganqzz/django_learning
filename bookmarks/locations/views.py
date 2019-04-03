@@ -15,9 +15,6 @@ from rest_framework.decorators import action
 from django.db.models.aggregates import Count
 
 
-# Create your views here.
-
-
 class SimpleHelloWorld(View):
     """
     View that returns Hello World

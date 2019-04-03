@@ -93,7 +93,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True)
     def reviews(self, request, pk=None):
-        """ネストに対しては、default paginatorは適用されないので、カスタムで行う必要がある"""
+        """
+        /courses/2/reviews/
+        ネストに対しては、default paginatorは適用されないので、カスタムで行う必要がある
+        """
         self.pagination_class.page_size = 1
         reviews = models.Review.objects.filter(course_id=pk).order_by('-created_at')
 
@@ -112,6 +115,6 @@ class ReviewViewSet(mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     viewsets.GenericViewSet):
-    """Create, Retrieve, Update, Delete, except List"""
+    """Create, Retrieve, Update, Delete, except List (405 Method not allowed)"""
     queryset = models.Review.objects.all()
     serializer_class = serializers.ReviewSerializer

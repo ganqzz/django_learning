@@ -5,6 +5,8 @@ from . import views
 app_name = 'sbxapp'  # application namespace
 
 urlpatterns = [
-    path('home/', views.home),
-    path('', views.dt_all2),
+    path('', views.home, name='home'),
+    path('example/', views.form_example, name='example'),
+    path('upload/', views.upload_file, name='upload-file'),
+    path('dt2/', views.dt_all2),
 ]

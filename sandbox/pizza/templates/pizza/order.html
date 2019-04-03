@@ -1,0 +1,20 @@
+{% extends 'pizza/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <h1>Order a Pizza</h1>
+
+  {# novalidate : for demo #}
+  <form action="{% url 'pizza:order' %}" method="post" novalidate>
+    {% csrf_token %}
+    {{ pizzaform | crispy }}
+    <input type="submit" value="Order Pizza">
+  </form>
+
+  <br><br>
+  Want more than one pizza?
+  <form action="{% url 'pizza:order-pizzas' %}" method="get">
+    {% csrf_token %}
+    {{ multiple_form | crispy}}
+    <input type="submit" value="Get Pizzas">
+  </form>
+{% endblock %}

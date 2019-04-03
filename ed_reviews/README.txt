@@ -12,6 +12,11 @@ testuser: testpassword: f4b25435dfdd5665aa584f8bcfbf0ed15ebdfba7
 >>> Token.objects.create(user=user)
 <Token: 116828e883d542de79ce8c7d93ef7c3f0abf8b92>
 ```
+or
+```
+python manage.py drf_create_token <user>
+```
+
 
 # changes from the original
 

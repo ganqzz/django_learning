@@ -15,9 +15,6 @@ from .models import Bookmark, Note, Comment, Like
 from .views import TemplateHelloPerson, BookmarkViewSet
 
 
-# Create your tests here.
-
-
 @tag('integration_test')
 class ITTest_TemplateHelloPerson(SimpleTestCase):
     def test_render(self):

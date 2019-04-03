@@ -133,6 +133,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
+        # デモのためのかなり小さい設定
         'anon': '5/minute',
         'user': '10/minute'
     },

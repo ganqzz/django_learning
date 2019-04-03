@@ -1,0 +1,16 @@
+{% extends 'pizza/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <h1>Edit Order</h1>
+
+  {# novalidate : for demo #}
+  <form action="{% url 'pizza:detail' pk=pizzaform.instance.pk %}" method="post" novalidate>
+    {% csrf_token %}
+    {{ pizzaform | crispy }}
+    <input type="submit" value="Edit Order">
+  </form>
+  <form action="{% url 'pizza:delete' pk=pizzaform.instance.pk %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete" onclick="return confirm('Delete?');">
+  </form>
+{% endblock %}

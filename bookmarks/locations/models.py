@@ -5,8 +5,6 @@ from django.db.models.fields.related import ForeignKey
 from django.db.utils import IntegrityError
 
 
-# Create your models here.
-
 class Bookmark(Model):
     link = URLField(max_length=1000, null=False, blank=False, db_index=True)
 

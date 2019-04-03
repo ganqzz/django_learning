@@ -28,7 +28,7 @@ django-admin startproject <project> [<base_dir>]
 
 - Run local server
 ```
-python manage.py runserver [0:8080]  # default => 127.0.0.1:8000
+python manage.py runserver [host:port]  # default => host: 127.0.0.1, port: 8000
 ```
 
 - Run shell
@@ -70,6 +70,14 @@ python manage.py sqlmigrate <app> <migration_name>  # show sql
 python manage.py migrate
 python manage.py showmigrations
 ```
+
+- Unapply
+```
+python manage.py showmigrations
+python manage.py migrate <app> zero
+python manage.py showmigrations
+```
+
 
 
 Django Command
