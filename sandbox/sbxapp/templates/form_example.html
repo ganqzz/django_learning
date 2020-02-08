@@ -1,7 +1,0 @@
-<h1>Order a Pizza</h1>
-
-<form action="{% url 'sbxapp:example' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>

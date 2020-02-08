@@ -5,9 +5,6 @@ class Course(models.Model):
     title = models.CharField(max_length=255)
     url = models.URLField(unique=True)  # hyperlinked identity fieldの"url"と混同しないように
 
-    class Meta:
-        ordering = ['id', ]
-
     def __str__(self):
         return self.title
 

@@ -2,40 +2,52 @@ ORM
 ===
 
 ```
->>> from gameplay.models import *
->>> Game.objects.all()
-<QuerySet [<Game: fuga vs hoge>, <Game: ganq vs hoge>]>
->>> Game.objects.get(pk=1)
-<Game: fuga vs hoge>
->>> Game.objects.get(id=1)
-<Game: fuga vs hoge>
->>> Game.objects.filter(first_player__username='ganq')
-<QuerySet [<Game: ganq vs hoge>, <Game: ganq vs fuga>]>
->>> Game.objects.filter(status='D')
-<QuerySet [<Game: ganq vs hoge>]>
->>> Game.objects.exclude(status='D')
-<QuerySet [<Game: fuga vs hoge>, <Game: ganq vs fuga>]>
->>> g=Game.objects.get(pk=2)
->>> g
-<Game: ganq vs hoge>
->>> g.status='S'
->>> g.save()
->>> g
-<Game: ganq vs hoge>
->>> m=Move(x=0,y=1,comment='hoge hgoefuga',game=g)
->>> m.by_first_player=True
->>> m.save()
->>> g.move_set.all()
-<QuerySet [<Move: Move object>]>
+# filtering
+>>> from courses.models import *
+>>> Course.objects.exclude(subject__in=('Python', 'Java'))
+<QuerySet [<Course: Python Basics>, <Course: Python Collections>, <Course: Object-Oriented Python>, <Course: Python Testing>, <Course: Build a Simple Android App>, <Course: Android Activity Lifecycle>, <Course: SQL Basics>, <Course: Modifying Data with SQL>, <Course: jQuery Basics>, <Course: Build a Simple Dynamic Site with Node.js>, <Course: Build a Basic PHP Website>]>
+>>> python = Course.objects.filter(title__icontains='python')
+>>> for course in python:
+...     course.subject = 'Python'
+...     course.save()
+...
+>>> Course.objects.exclude(subject__in=('Python', 'Java'))
+<QuerySet [<Course: Build a Simple Android App>, <Course: Android Activity Lifecycle>, <Course: SQL Basics>, <Course: Modifying Data with SQL>, <Course: jQuery Basics>, <Course: Build a Simple Dynamic Site with Node.js>, <Course: Build a Basic PHP Website>]>
+>>>
 
----
+# projection
+>>> Course.objects.filter(subject__icontains='javascript')
+<QuerySet [<Course: jQuery Basics>, <Course: Build a Simple Dynamic Site with Node.js>]>
+>>> Course.objects.filter(subject__icontains='javascript').values('id', 'title', )
+<QuerySet [{'id': 16, 'title': 'jQuery Basics'}, {'id': 17, 'title': 'Build a Simple Dynamic Site with Node.js'}]>
+>>> Course.objects.filter(subject__icontains='javascript').values_list('id', 'title', )
+<QuerySet [(16, 'jQuery Basics'), (17, 'Build a Simple Dynamic Site with Node.js')]>
+>>>
+
+# Limit and Offset
+>>> Course.objects.all()[2:5]
+<QuerySet [<Course: Object-Oriented Python>, <Course: Python Testing>, <Course: Customizing Django Templates>]>
+>>> Course.objects.all()[:3]
+<QuerySet [<Course: Python Basics>, <Course: Python Collections>, <Course: Object-Oriented Python>]>
+>>> Course.objects.all()[12:]
+<QuerySet [<Course: Java Objects>, <Course: Java Data Structures>, <Course: Build a Basic PHP Website>]>
+
+# datetime
+>>> Course.objects.datetimes('created_at', 'year')
+<QuerySet [datetime.datetime(2016, 1, 1, 0, 0, tzinfo=<DstTzInfo 'Asia/Tokyo' JST+9:00:00 STD>), datetime.datetime(2018, 1, 1, 0, 0, tzinfo=<DstTzInfo 'Asia/Tokyo' JST+9:00:00 STD>)]>
+>>> Course.objects.datetimes('created_at', 'month')
+<QuerySet [datetime.datetime(2016, 1, 1, 0, 0, tzinfo=<DstTzInfo 'Asia/Tokyo' JST+9:00:00 STD>), datetime.datetime(2018, 4, 1, 0, 0, tzinfo=<DstTzInfo 'Asia/Tokyo' JST+9:00:00 STD>)]>
+>>>
+
+
+# F
 >>> from courses.models import *
 >>> from django.db.models import F
 >>> quiz = Quiz.objects.latest('id')
 >>> quiz.times_taken += 1
 >>> quiz.times_taken
-1
 >>> quiz.save()
+1
 >>> quiz.times_taken = F('times_taken') + 1
 >>> quiz.save()
 >>> quiz.times_taken
@@ -50,4 +62,4 @@ ORM
 >>> quiz.times_taken
 3
 >>>
-```
+``

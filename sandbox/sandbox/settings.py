@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'crispy_forms',
     'sbxapp',
-    'hashing',
     'pizza',
 
     # dev only
@@ -61,7 +60,7 @@ ROOT_URLCONF = 'sandbox.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,8 +81,7 @@ WSGI_APPLICATION = 'sandbox.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'sandbox/../db.sqlite3'),
-        # 'TEST_NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -110,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ja-jp'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Car List{% endblock %}
+{% block content %}
+  <div class="container">
+    {% for car in cars %}
+      <div>
+        <a href="{% url 'sbxapp:car-detail' pk=car.pk %}">{{ car }}</a>
+        <form method="post" action="{% url 'sbxapp:car-delete' pk=car.pk %}">
+          {% csrf_token %}
+          <input type="submit" value="Delete" onclick="return confirm('Delete?');">
+        </form>
+      </div>
+    {% endfor %}
+   <p><a href="{% url 'sbxapp:car-create' %}">Create new Car</a></p>
+  </div>
+{% endblock %}

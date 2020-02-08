@@ -14,7 +14,7 @@
   Want more than one pizza?
   <form action="{% url 'pizza:order-pizzas' %}" method="get">
     {% csrf_token %}
-    {{ multiple_form | crispy}}
+    {{ multiple_form | crispy }}
     <input type="submit" value="Get Pizzas">
   </form>
 {% endblock %}

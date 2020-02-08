@@ -33,5 +33,5 @@ urlpatterns = [
     # url(r'^api/v1/courses/', include('courses.urls', namespace='courses')),
     url(r'^api/v1/courses/', include('courses.urls')),
     # url(r'^api/v2/', include(router.urls, namespace='apiv2')),
-    url(r'^api/v2/', include((router.urls, 'apiv2',))),
+    url(r'^api/v2/', include((router.urls, 'apiv2',))),  # 2nd param: app_name
 ]

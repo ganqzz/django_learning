@@ -1,7 +1,0 @@
-<h1>Upload a File</h1>
-
-<form action="{% url 'sbxapp:upload-file' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>

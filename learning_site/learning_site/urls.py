@@ -28,7 +28,8 @@ urlpatterns = [
     url(r'^$', views.hello_world, name="home"),
 ]
 
-# urlpatterns += staticfiles_urlpatterns()
+# DEBUG=Trueでのみ有効。開発中にSTATICFILES_DIRS以外に参照する場合のみ必要
+# urlpatterns += staticfiles_urlpatterns('another_location')
 
 # Debug Toolbar
 if settings.DEBUG:

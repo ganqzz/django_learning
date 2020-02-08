@@ -1,7 +1,13 @@
-# Django REST API & React App
+# Django REST API
 
-- django-cors-headers
-- django-oauth-toolkit
+- packages
+    * django-cors-headers
+    * django-oauth-toolkit
 
-- Token生成
-    <site>/locations/o/applications/
+- data migration
+    migration file (migrations.RunPython)
+    rollbackも自前で作る必要がある
+
+- no application namespace
+
+- Test

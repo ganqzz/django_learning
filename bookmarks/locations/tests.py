@@ -1,109 +1,98 @@
+from datetime import timedelta
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.db.models.aggregates import Count
-from django.test import SimpleTestCase, TestCase
+from django.test import TestCase
 from django.test import tag
-from django.test.client import RequestFactory
-from django.urls.base import reverse
+from django.utils import timezone
 from django.utils.six import BytesIO
+from oauth2_provider.models import get_application_model, get_access_token_model
 from rest_framework import status
 from rest_framework.parsers import JSONParser
-from rest_framework.test import APIClient
 from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
 
 from .models import Bookmark, Note, Comment, Like
-from .views import TemplateHelloPerson, BookmarkViewSet
+from .views import BookmarkViewSet
 
 
-@tag('integration_test')
-class ITTest_TemplateHelloPerson(SimpleTestCase):
-    def test_render(self):
-        response = self.client.get(
-            reverse('hello-view3', kwargs={'name': 'Allan'}), follow=True
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.resolver_match.url_name, 'hello-view3')
-        self.assertContains(response, b'<title>Hello Allan</title>')
-        self.assertContains(
-            response, b'<p>There are 5 characters in your name</p>'
-        )
-        self.assertContains(
-            response, b'you have not won'
-        )
+def set_up_bookmarks():
+    bookmark1 = Bookmark(link="https://www.yahoo.co.jp/")
+    bookmark1.save()
+    bookmark2 = Bookmark(link="https://www.msn.com/")
+    bookmark2.save()
+    bookmark3 = Bookmark(link="https://www.bbc.com/")
+    bookmark3.save()
+    note = Note(text="This is a note", bookmark=bookmark2)
+    note.save()
+    comment = Comment(bookmark=bookmark3, text="This is a comment")
+    comment.save()
+    like1 = Like(bookmark=bookmark1)
+    like1.save()
+    like2 = Like(comment=comment)
+    like2.save()
 
 
-@tag('unit_test')
-class UTTest_TemplateHelloPerson(SimpleTestCase):
+def create_user_access_token():
+    user = get_user_model().objects.create(username='user')
+    token_expiration_time = timezone.now() + timedelta(minutes=60)
+    token = get_access_token_model().objects.create(
+        user=user,
+        scope='read write packages',
+        token='test{}{}'.format(
+            user.id,
+            int(token_expiration_time.timestamp())
+        ),
+        application=get_application_model().objects.first(),
+        expires=token_expiration_time
+    )
+    return token
+
+
+def auth_header(token):
+    return {
+        'HTTP_AUTHORIZATION': 'Bearer {}'.format(token)
+    }
+
+
+class BookmarkViewSetIntegrationTest(APITestCase):
     def setUp(self):
         super().setUp()
-        self.request = RequestFactory().get('/fake-path')
-        self.view = TemplateHelloPerson()
-        self.view = setup_view_test(self.view, self.request)
-
-    def test_class_attributes(self):
-        self.assertEqual(self.view.template_name, 'locations/hello.html')
-
-    def test_get_context_data(self):
-        self.view.kwargs['name'] = 'Fred'
-        context = self.view.get_context_data()
-        self.assertEqual(context['name'], 'Fred')
-
-
-def setup_view_test(view, request, *args, **kwargs):
-    """
-    Mimic as_view() returned callable, but returns view instance.
-
-    args and kwargs are the same you would pass to ``reverse()``
-    """
-    view.request = request
-    view.args = args
-    view.kwargs = kwargs
-    return view
-
-
-class Test_BookmarkViewset(TestCase):
-    def setUp(self):
-        super().setUp()
-        bookmark1 = Bookmark(link="http://www.google.com/")
-        bookmark1.save()
-        bookmark2 = Bookmark(link="http://www.cnn.com/")
-        bookmark2.save()
-        bookmark3 = Bookmark(link="http://www.bbc.co.uk/")
-        bookmark3.save()
-        note = Note(text="This is a note", bookmark=bookmark2)
-        note.save()
-        comment = Comment(bookmark=bookmark3, text="This is a comment")
-        comment.save()
-        like1 = Like(bookmark=bookmark1)
-        like1.save()
-        like2 = Like(comment=comment)
-        like2.save()
+        set_up_bookmarks()
+        self.auth_header = auth_header(create_user_access_token())
 
     @tag('integration_test')
     def test_get(self):
-        client = APIClient()
-        result = client.get('/locations/bookmarks/')
+        result = self.client.get('/locations/bookmarks/', **self.auth_header)
         stream = BytesIO(result.content)
-        data = JSONParser().parse(stream)
-        self.assertEqual(len(data), 6)
+        data = JSONParser().parse(stream)  # paginationが有効な時は、dictになることに注意
+        self.assertEqual(len(data), 6)  # migration:3 + setUp:3
 
     @tag('integration_test')
-    def test_add_like(self):
+    def test_add_like_it(self):
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 0)
-        client = APIClient()
-        result = client.post('/locations/bookmarks/6/add_like/')
+
+        result = self.client.post('/locations/bookmarks/6/add_like/', **self.auth_header)
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 1)
-        result = client.post('/locations/bookmarks/6/add_like/')
+
+        result = self.client.post('/locations/bookmarks/6/add_like/', **self.auth_header)
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 2)
+
+
+class BookmarkViewSetUnitTest(TestCase):
+    def setUp(self):
+        super().setUp()
+        set_up_bookmarks()
 
     @tag('unit_test')
     @patch('locations.views.Response')
     @patch('locations.views.BookmarkViewSet.get_object')
     @patch('locations.views.Like')
-    def test_add_like(self, l_patch, go_patch, r_patch):
+    def test_add_like_ut(self, l_patch, go_patch, r_patch):
         factory = APIRequestFactory()
         request = factory.post(
             '/locations/bookmarks/6/add_like/', {}

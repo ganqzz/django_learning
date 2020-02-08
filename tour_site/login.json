@@ -1,0 +1,8 @@
+{
+  "grant_type": "password",
+  "username": "user_a",
+  "password": "user_a",
+  "client_id": "wql5aqXepfkcF0JQOAoOo921zbvcrQSg1MUb2VUe",
+  "client_secret": "tVnwobvL4C7D76AOsYkrtDLh1D1mahbUqkzSBfqVi2zXfsBBD9Jm8FNe6yWof1XYIOwBfxtKrZh4Eug3piGu94Oga2R0VHJVG2VxQn1pw5Y5xcBOva0IX1n4WrPXZn0N",
+  "scope": "read write packages"
+}

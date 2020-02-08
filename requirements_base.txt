@@ -1,0 +1,15 @@
+Django
+django-bootstrap3
+django-braces
+django-cors-headers
+django-crispy-forms
+django-filter
+django-oauth-toolkit
+django-widget-tweaks
+djangorestframework
+markdown2
+oauthlib
+Pillow  # ImageField
+python-dateutil
+pytz
+requests

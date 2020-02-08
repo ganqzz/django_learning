@@ -1,7 +1,8 @@
-from rest_framework.serializers import HyperlinkedModelSerializer, Serializer, \
-    ModelSerializer
 from rest_framework.fields import IntegerField, URLField
-from .models import Bookmark, Comment, Note, Like
+from rest_framework.serializers import Serializer, ModelSerializer, \
+    HyperlinkedModelSerializer
+
+from .models import Bookmark, Comment, Note
 
 
 class BookmarkManualSerializer(Serializer):

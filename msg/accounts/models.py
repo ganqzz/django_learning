@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):  # 順番注意（AbstractUser�
 
     objects = UserManager()  # Model Manager
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "email"  # used as identification token field
     REQUIRED_FIELDS = ["display_name", "username"]
 
     def __str__(self):

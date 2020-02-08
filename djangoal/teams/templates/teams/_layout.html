@@ -8,9 +8,13 @@
     <li><a href="#">Analytics</a></li>
     <li><a href="#">Export</a></li>
   </ul>
-  <ul class="nav nav-sidebar">
-    <li>
-      <a href="{% url 'teams:create' %}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new team</a>
-    </li>
-  </ul>
+  {% if user.is_authenticated %}
+    <ul class="nav nav-sidebar">
+      <li>
+        <a href="{% url 'teams:create' %}">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new team
+        </a>
+      </li>
+    </ul>
+  {% endif %}
 {% endblock %}

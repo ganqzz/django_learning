@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Hash List{% endblock %}
+{% block content %}
+  <div class="container">
+    {% for hash in hashes %}
+      <div>
+        <a href="{% url 'sbxapp:hashing-detail' hash=hash.hash %}">{{ hash.text }}</a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="pagination">
+    <p class="step-links">
+        {% if hashes.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ hashes.previous_page_number }}">previous</a>
+        {% endif %}
+
+      <span class="current">
+        Page {{ hashes.number }} of {{ hashes.paginator.num_pages }}.
+      </span>
+
+      {% if hashes.has_next %}
+        <a href="?page={{ hashes.next_page_number }}">next</a>
+        <a href="?page={{ hashes.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </p>
+  </div>
+  <p><a href="{% url 'sbxapp:hashing-create' %}">Create Hash</a></p>
+{% endblock %}

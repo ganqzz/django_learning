@@ -50,12 +50,12 @@ class TeamUpdateView(LoginRequiredMixin, PageTitleMixin, UpdateView):
 
     def get_page_title(self):
         obj = self.get_object()
-        return "Update {}".format(obj.name)
+        return 'Update {}'.format(obj.name)
 
 
 class TeamDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Team
-    success_url = reverse_lazy("teams:list")
+    success_url = reverse_lazy('teams:list')
 
     def get_queryset(self):
         if not self.request.user.is_superuser:

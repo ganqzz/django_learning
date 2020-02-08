@@ -5,6 +5,7 @@ from rest_framework import mixins
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.reverse import reverse
@@ -18,7 +19,7 @@ class TopView(APIView):
         return Response({
             'course_list': reverse('course_list_low', request=request),
             'api_v1_courses': reverse('courses:course_list', request=request),
-            'ap1_v2': reverse('apiv2:api-root', request=request),
+            'api_v2': reverse('apiv2:api-root', request=request),
         })
 
 
@@ -45,6 +46,7 @@ class ListCourse(APIView):
 class ListCreateCourse(generics.ListCreateAPIView):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    # UnorderedObjectListWarning on Paginating
 
 
 class RetrieveUpdateDestroyCourse(generics.RetrieveUpdateDestroyAPIView):
@@ -90,6 +92,9 @@ class CourseViewSet(viewsets.ModelViewSet):
     )
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('id', 'title',)
+    ordering = ('title',)
 
     @action(methods=['get'], detail=True)
     def reviews(self, request, pk=None):

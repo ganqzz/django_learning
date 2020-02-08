@@ -12,19 +12,17 @@ register = template.Library()
 @register.simple_tag
 def newest_course():
     """ Gets the most recent course that was added to the library """
-    return Course.objects.latest('created_at')
+    return Course.objects.filter(published=True).latest('created_at')
 
 
 @register.inclusion_tag('courses/course_nav.html')
 def nav_courses_list():
     """ Returns dictionary of courses to display as navigation pane """
     # courses = Course.objects.all()
-    courses = Course.objects.filter(
-        published=True
-    ).order_by(
-        '-created_at'
-    ).values(
-        'id', 'title')[:5]
+    courses = Course.objects \
+                  .filter(published=True) \
+                  .order_by('-created_at') \
+                  .values('id', 'title')[:5]  # dict of attributes instead of the Model instance
     return {'courses': courses}
 
 

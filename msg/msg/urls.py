@@ -27,4 +27,4 @@ urlpatterns = [
     url(r"^posts/", include("posts.urls")),
     url(r"^communities/", include("communities.urls")),
 ]
-urlpatterns += staticfiles_urlpatterns()
+# urlpatterns += staticfiles_urlpatterns()

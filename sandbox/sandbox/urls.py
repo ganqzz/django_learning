@@ -21,7 +21,11 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.top, name='top'),
-    path('app/', include('sbxapp.urls')),
-    path('hashing/', include('hashing.urls')),
+
+    path('sandbox/', include('sbxapp.urls')),
     path('pizza/', include('pizza.urls')),
+
+    path('no_slash', views.trailing_slash),
+    path('slash/', views.trailing_slash),
+    path('params/', views.params),
 ]

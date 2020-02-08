@@ -60,7 +60,7 @@
 {% endblock %}
 
 {% block javascript %}
-  {% load static from staticfiles %}
+  {% load static %}
   {{ form.media.js }}
   <script src="{% static 'js/vendor/jquery.formset.js' %}"></script>
   <script>

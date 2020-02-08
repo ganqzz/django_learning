@@ -1,0 +1,7 @@
+-r requirements_base.txt
+coverage
+django-debug-toolbar
+django-extensions
+factory-boy
+Faker
+selenium

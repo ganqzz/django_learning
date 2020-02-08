@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Hashing{% endblock %}
+{% block content %}
+  <form action="{% url 'sbxapp:hashing-create' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input name="submit" type="submit" value="Save">
+  </form>
+
+  <h3 id="quickhash"></h3>
+
+  <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+  <script>
+    $('#id_text').keyup(function() {
+      var text = $(this).val();
+
+      $.ajax({
+        url: '{% url 'sbxapp:hashing-quickhash' %}',
+        data: {'text': text},
+        dataType: 'json',
+        success: function(data) {
+          $('#quickhash').text(data['hash']);
+        }
+      });
+    });
+  </script>
+{% endblock %}

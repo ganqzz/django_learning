@@ -1,9 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import (
-    TemplateView,
-    View
-)
+from django.views.generic import TemplateView, View
 
 
 def home(request):

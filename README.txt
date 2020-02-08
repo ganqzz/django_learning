@@ -9,12 +9,12 @@ Commands
 cd <repository_root>
 
 # Linux (bash)
-python3 -m venv env
-source env/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 
 # Windows (PowerShell)
-python -m venv env
-env/Scripts/Activate.ps1
+python -m venv venv
+venv/Scripts/Activate.ps1
 
 - Install Django
 ```
@@ -23,7 +23,7 @@ pip install django
 
 - Create project
 ```
-django-admin startproject <project> [<base_dir>]
+django-admin startproject <project> [<base_dir>]  # default: create <project> sub directory
 ```
 
 - Run local server
@@ -62,22 +62,22 @@ Model and Migration
 - 大幅な変更を行った場合には、migration後うまく動かないこともある。
    特に、SQLiteは厳密な型がないので、型変更を伴うmigration後にTypeErrorが起きやすい。
    dbファイルとmigrationファイルを削除して作り直す。
+
 - create models
 ```
 python manage.py makemigrations [<app>]
-python manage.py showmigrations
+python manage.py showmigrations [<app>]
 python manage.py sqlmigrate <app> <migration_name>  # show sql
-python manage.py migrate
-python manage.py showmigrations
+python manage.py migrate [<app>] [<migration_name>]
+python manage.py showmigrations [<app>]
 ```
 
 - Unapply
 ```
-python manage.py showmigrations
-python manage.py migrate <app> zero
-python manage.py showmigrations
+python manage.py showmigrations [<app>]
+python manage.py migrate <app> zero  # zero: all
+python manage.py showmigrations [<app>]
 ```
-
 
 
 Django Command
@@ -141,12 +141,13 @@ MIDDLEWARE = [
 Testing
 ---
 
-- unittest.TestCase
-- django.test
-    * SimpleTestCase
-    * TransactionTestCase
-    * TestCase
-    * LiveServerTestCase, StaticLiveServerTestCase
+- TestCases (django.test.testcases)
+    * unittest.TestCase
+    * \_SimpleTestCase
+    *   \_TransactionTestCase
+    *     \_TestCase
+    *     \_LiveServerTestCase
+    *       \_StaticLiveServerTestCase
 
 ``` test
 python manage.py test
@@ -161,3 +162,17 @@ coverage report
 coverage report -m
 coverage html
 ```
+
+
+Django REST Framework
+---
+
+- ImageField
+    requires Pillow package
+
+- CORS (django-cors-headers)
+
+- OAuth2 (django-oauth-toolkit)
+    * Application作成
+        <site>/locations/o/applications/
+        もしくは、adminから直接作成

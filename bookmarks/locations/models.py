@@ -8,6 +8,9 @@ from django.db.utils import IntegrityError
 class Bookmark(Model):
     link = URLField(max_length=1000, null=False, blank=False, db_index=True)
 
+    class Meta:
+        ordering = ('id',)
+
     def __str__(self):
         return str(self.link)
 
@@ -49,7 +52,7 @@ class Like(Model):
         )
 
     def clean(self):
-        super().clean(self)
+        super().clean()
         if self.bookmark is None:
             if self.comment is None:
                 raise IntegrityError(

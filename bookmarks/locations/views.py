@@ -1,48 +1,17 @@
-from django.shortcuts import render
-from django.views.generic import View, TemplateView
-from django.http import HttpResponse, JsonResponse
-from rest_framework.views import APIView
+from django.db.models import Count
+from django.http import Http404, JsonResponse
+from django.views.generic import View
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.generics import ListCreateAPIView, \
     RetrieveUpdateDestroyAPIView
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status
-from django.http import Http404
-from locations.models import Bookmark, Comment, Note, Like
-from locations.serializers import BookmarkSerializer, NoteSerializer, \
-    CommentSerializer, CommentSerializerWithLikes, BookmarkLinkSerializer
-from rest_framework.decorators import action
-from django.db.models.aggregates import Count
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
-
-class SimpleHelloWorld(View):
-    """
-    View that returns Hello World
-    """
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('<h1>Hello world</h1>')
-
-
-class SimpleHelloPerson(View):
-    """
-    View that returns Hello $person parameter
-    """
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('<h1>Hello {}</h1>'.format(kwargs['name']))
-
-
-class TemplateHelloPerson(TemplateView):
-    """
-    View that uses template to return Hello $person parameter
-    """
-    template_name = 'locations/hello.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['name'] = self.kwargs['name']
-        return context
+from .models import Bookmark, Comment, Note, Like
+from .serializers import BookmarkSerializer, NoteSerializer, \
+    CommentSerializerWithLikes, BookmarkLinkSerializer
 
 
 class SimpleHelloWorldAPI(View):
@@ -51,24 +20,16 @@ class SimpleHelloWorldAPI(View):
     """
 
     def get(self, request, *args, **kwargs):
-        if kwargs['name'].lower() != 'fred':
-            return JsonResponse(
-                {
-                    'description': 'This endpoint welcomes the user',
-                    'welcome': 'Hello {}'.format(kwargs['name'])
-                },
-                status=200
-            )
+        if kwargs['name'].lower() != 'hoge':
+            return JsonResponse({
+                'description': 'This endpoint welcomes the user',
+                'welcome': 'Hello {}'.format(kwargs['name'])
+            }, status=200)
         else:
-            return JsonResponse(
-                {
-                    'description': 'This demonstrates an error',
-                    'error': '{} is not an authorised user'.format(
-                        kwargs['name']
-                    )
-                },
-                status=403
-            )
+            return JsonResponse({
+                'description': 'This demonstrates an error',
+                'error': '{} is not an authorised user'.format(kwargs['name'])
+            }, status=403)
 
 
 class BookmarkListView(APIView):

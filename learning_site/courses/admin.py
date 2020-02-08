@@ -49,7 +49,6 @@ class AnswerInline(admin.TabularInline):
 
 class YearListFilter(admin.SimpleListFilter):
     title = 'year created'
-
     parameter_name = 'year'
 
     def lookups(self, request, model_admin):
@@ -68,7 +67,6 @@ class YearListFilter(admin.SimpleListFilter):
 
 class TopicListFilter(admin.SimpleListFilter):
     title = 'topic'
-
     parameter_name = 'topic'
 
     def lookups(self, request, model_admin):
@@ -85,22 +83,19 @@ class TopicListFilter(admin.SimpleListFilter):
             )
 
 
+@admin.register(models.Course)
 class CourseAdmin(admin.ModelAdmin):
     inlines = [TextInline, QuizInline, ]
-
     search_fields = ['title', 'description']
-
-    list_filter = ['created_at', 'is_live',
-                   YearListFilter, TopicListFilter, ]
-
-    list_display = ['title',
-                    'created_at',
-                    'is_live',
-                    'time_to_complete',  # from Course model
-                    'status']
-
+    list_filter = ['created_at', 'is_live', YearListFilter, TopicListFilter, ]
+    list_display = [
+        'title',
+        'created_at',
+        'is_live',
+        'time_to_complete',  # from Course model
+        'status',
+    ]
     list_editable = ['status']
-
     actions = [make_published, make_in_review, make_in_progress]
 
     # Markdown preview
@@ -113,40 +108,23 @@ class CourseAdmin(admin.ModelAdmin):
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [AnswerInline, ]
-
     search_fields = ['prompt']
-
     list_display = ['prompt', 'quiz', 'order']
-
     list_editable = ['quiz', 'order']
-
     radio_fields = {'quiz': admin.HORIZONTAL}
-
     actions = ['delete_selected']  # globally disabled and allowed only in QuestionAdmin
 
 
 class QuizAdmin(admin.ModelAdmin):
-    fields = ['course',
-              'title',
-              'description',
-              'order',
-              'total_questions']
-
+    fields = ['course', 'title', 'description', 'order', 'total_questions']
     search_fields = ['title', 'description']
-
     list_filter = ['course']
-
-    list_display = ['title',
-                    'course',
-                    'number_correct_needed',
-                    'total_questions']
-
+    list_display = ['title', 'course', 'number_correct_needed', 'total_questions']
     list_editable = ['course', 'total_questions']
 
 
 class TextAdmin(admin.ModelAdmin):
     # fields = ['course', 'title', 'order', 'description', 'content']
-
     fieldsets = (
         (None, {
             'fields': ('course', 'title', 'order', 'description')
@@ -156,11 +134,10 @@ class TextAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         })
     )
-
     radio_fields = {"course": admin.VERTICAL}
 
 
-admin.site.register(models.Course, CourseAdmin)
+# admin.site.register(models.Course, CourseAdmin)
 admin.site.register(models.Text, TextAdmin)
 admin.site.register(models.Quiz, QuizAdmin)
 admin.site.register(models.MultipleChoiceQuestion, QuestionAdmin)
