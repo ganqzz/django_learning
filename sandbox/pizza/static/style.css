@@ -1,0 +1,120 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+a, a:hover, a:active, a:focus, a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar {
+  background-color: #248745;
+  color: #fff;
+  justify-content: space-between;
+  height: 4rem;
+  padding: 0 2%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.navbar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar-menu-item {
+  display: flex;
+}
+
+.navbar-menu-item + .navbar-menu-item {
+}
+
+.navbar-menu-item > a {
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-menu-item > a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.main {
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.placeholders {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.placeholder {
+  margin-bottom: 20px;
+}
+
+.placeholder a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.placeholder a:hover {
+  background-color: lightgrey;
+}
+
+.btn {
+}
+
+.alert {
+  padding: 10px 20px;
+}
+
+.alert.alert-error {
+  background-color: red;
+}
+
+.alert.alert-warning {
+  background-color: yellow;
+}

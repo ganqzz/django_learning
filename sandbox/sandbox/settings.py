@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'crispy_forms',
     'sbxapp',
     'pizza',
 
     # dev only
+    'debug_toolbar',
     'django_extensions',
 ]
 
@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # debug toolbar
 ]
 
 ROOT_URLCONF = 'sandbox.urls'
@@ -106,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'ja-jp'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Tokyo'
 
@@ -121,5 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# form
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# Debug Toolbar
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda x: DEBUG
+}

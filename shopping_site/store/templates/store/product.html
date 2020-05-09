@@ -2,6 +2,7 @@
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
   <h2>{{ product.name }}</h2>
+  <div>Total orders: {{ total_orders }}</div>
   <p>{{ product.description }}</p>
   {% if product.is_on_sale %}
     <p class="price sale-price">

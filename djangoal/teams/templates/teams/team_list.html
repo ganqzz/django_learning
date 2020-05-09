@@ -1,26 +1,20 @@
-{% extends "teams/_layout.html" %}
-{% load static %}
+{% extends "teams/layout.html" %}
 {% load team_tags %}
 
-{% block css %}
-  <link rel="stylesheet" href="{% static 'css/icons.css' %}">
-{% endblock %}
-
 {% block body_content %}
-  <h1 class="page-header">Dashboard</h1>
-  <div class="row placeholders">
+  <h2>Dashboard</h2>
+  <div class="placeholders">
     {% for team in teams %}
       {% team_avatar team %}
     {% endfor %}
   </div>
 
   {% if user.is_authenticated %}
-    <div class="row">
-      <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Save">
-      </form>
-    </div>
+    <hr>
+    <form method='POST'>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn" value="Save">
+    </form>
   {% endif %}
 {% endblock %}

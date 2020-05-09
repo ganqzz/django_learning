@@ -10,7 +10,8 @@
           <input type="submit" value="Delete" onclick="return confirm('Delete?');">
         </form>
       </div>
+      <br>
     {% endfor %}
-   <p><a href="{% url 'sbxapp:car-create' %}">Create new Car</a></p>
+    <p><a href="{% url 'sbxapp:car-create' %}">Create new Car</a></p>
   </div>
 {% endblock %}

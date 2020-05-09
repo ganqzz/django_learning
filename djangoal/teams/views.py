@@ -1,13 +1,22 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import (
-    ListView, DetailView,
+from django.views.generic import ListView, DetailView, \
     CreateView, UpdateView, DeleteView
-)
 
 from . import models
-from .mixins import PageTitleMixin
+
+
+class PageTitleMixin:
+    page_title = ""
+
+    def get_page_title(self):
+        return self.page_title
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # mro
+        context['page_title'] = self.get_page_title()
+        return context
 
 
 def team_list(request):

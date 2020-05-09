@@ -28,4 +28,33 @@ class Car(models.Model):
     year = models.IntegerField()
 
     def __str__(self):
+        return '{}: {} ({})'.format(self.make, self.name, self.year)
+
+
+# --- N+1 Demo
+
+class Category(models.Model):
+    """カテゴリー"""
+    name = models.CharField('カテゴリ名', max_length=255)
+
+    def __str__(self):
         return self.name
+
+
+class Tag(models.Model):
+    """タグ"""
+    name = models.CharField('タグ名', max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Post(models.Model):
+    """記事"""
+    title = models.CharField('タイトル', max_length=255)
+    category = models.ForeignKey(Category, related_name='+',
+                                 verbose_name='カテゴリ', on_delete=models.PROTECT)
+    tags = models.ManyToManyField(Tag, related_name='+', verbose_name='タグ')
+
+    def __str__(self):
+        return self.title

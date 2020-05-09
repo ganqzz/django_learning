@@ -1,6 +1,9 @@
 ORM
 ===
 
+- Model.save()
+    * save() does not call full_clean(). Model.objects.create() also the same.
+
 ```
 # filtering
 >>> from courses.models import *
@@ -62,4 +65,4 @@ ORM
 >>> quiz.times_taken
 3
 >>>
-``
+```

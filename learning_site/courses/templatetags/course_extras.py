@@ -26,8 +26,6 @@ def nav_courses_list():
     return {'courses': courses}
 
 
-# register.inclusion_tag('courses/cource_nav.html')(nav_courses_list)
-
 @register.filter
 def time_estimate(word_count):
     """

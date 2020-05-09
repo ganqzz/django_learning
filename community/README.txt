@@ -8,5 +8,7 @@
         LOGOUT_REDIRECT_URL
         LOGIN_URL
 
+- Register
+
 - Profile model pattern
     - Profile model as User model's add-on (One-to-One)

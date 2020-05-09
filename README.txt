@@ -153,7 +153,8 @@ Testing
 python manage.py test
 python manage.py test -v 2  # verbosity level
 python manage.py test <app.package.module.class.method>
-python manage.py test --tag=<tag>
+python manage.py test --tag=<tag>  # limit by <tag>
+python manage.py test --exclude-tag=<tag>  # opposite above
 ```
 
 ``` coverage

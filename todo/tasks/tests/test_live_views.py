@@ -39,14 +39,14 @@ class TasksViewsStaticLiveServerTestCase(StaticLiveServerTestCase):
         self.selenium.find_element_by_css_selector('button[type="submit"]').click()
 
     def get_task_check_button(self):
-        return self.selenium.find_element_by_css_selector('.task-complete span')
+        return self.selenium.find_element_by_css_selector('.task-complete i')
 
     def test_toggle(self):
         self.login()
         task_check_button = self.get_task_check_button()
-        self.assertTrue('glyphicon-blue' in task_check_button.get_attribute('class'))
+        self.assertTrue('icon-blue' in task_check_button.get_attribute('class'))
 
         task_check_button.click()
 
         task_check_button = self.get_task_check_button()
-        self.assertTrue('glyphicon-red' in task_check_button.get_attribute('class'))
+        self.assertTrue('icon-red' in task_check_button.get_attribute('class'))

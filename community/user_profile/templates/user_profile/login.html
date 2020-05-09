@@ -1,48 +1,13 @@
-{% extends 'user_profile/base.html' %}
+{% extends 'base.html' %}
 {% block body %}
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 col-lg-offset-4">
-        <div class="logo">
-          <div>
-            <a href="{% url 'index' %}">Forum</a>
-          </div>
-        </div>
+  <div class="page-title">Login</div>
 
-        <div class="pageTitle">Login</div>
-
-        <div class="row pad">
-          <div class="col-lg-10 col-lg-offset-1">
-            <form action="" method="POST" role="form">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="id_username">Username</label>
-                {{ form.username }}
-              </div>
-
-              <div class="form-group">
-                <label for="id_password">Password</label>
-                {{ form.password }}
-              </div>
-
-              <div style="color: red;">{{ form.errors }}</div>
-
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary">
-                  Login
-                  <i class="glyphicon glyphicon-arrow-right"></i>
-                </button>
-                <a href="{% url 'register' %}" class="btn btn-link pull-right">
-                  <i class="glyphicon glyphicon-plus-sign"></i> Go to Register
-                </a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        {% include 'user_profile/footer.html' %}
-
-      </div>
+  <form action="" method="POST" role="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Login</button>
+      <a href="{% url 'register' %}" class="btn btn-outline pull-right">Go to Register &plus;</a>
     </div>
-  </div>
+  </form>
 {% endblock %}

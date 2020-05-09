@@ -16,9 +16,9 @@
     {% csrf_token %}
     <button type="submit" class="task-complete">
       {% if task.is_complete %}
-        <span class="glyphicon glyphicon glyphicon-ok-circle glyphicon-red"></span>
+        <i class="far fa-check-circle icon-red"></i>
       {% else %}
-        <span class="glyphicon glyphicon glyphicon-ok-circle glyphicon-blue"></span>
+        <i class="far fa-check-circle icon-blue"></i>
       {% endif %}
     </button>
   </form>

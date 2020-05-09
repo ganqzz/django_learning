@@ -2,6 +2,12 @@ from django import forms
 
 from sbxapp.models import Car
 
+SIZE_CHOICES = [
+    ('Small', 'Small'),
+    ('Medium', 'Medium'),
+    ('Large', 'Large')
+]
+
 
 class ExampleForm(forms.Form):
     username = forms.CharField(max_length=30, min_length=4,
@@ -12,17 +18,16 @@ class ExampleForm(forms.Form):
     url = forms.URLField()
     boolean = forms.BooleanField()
     date = forms.DateField()
+    time = forms.TimeField()
+    datetime = forms.DateTimeField()
     image = forms.ImageField()
-    choice = forms.ChoiceField(
-        choices=[('Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')])
+    choice = forms.ChoiceField(choices=SIZE_CHOICES)
     m_choice = forms.MultipleChoiceField(label='Multi Choice',
-        choices=[('Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')])
-    check_box = forms.MultipleChoiceField(
-        choices=[('Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')],
-        widget=forms.CheckboxSelectMultiple)
-    radio = forms.ChoiceField(
-        choices=[('Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')],
-        widget=forms.RadioSelect)
+                                         choices=SIZE_CHOICES)
+    check_box = forms.MultipleChoiceField(choices=SIZE_CHOICES,
+                                          widget=forms.CheckboxSelectMultiple)
+    radio = forms.ChoiceField(choices=SIZE_CHOICES,
+                              widget=forms.RadioSelect)
 
     def clean(self):
         # custom validation
@@ -39,9 +44,13 @@ class HashForm(forms.Form):
 
 
 class CarForm(forms.ModelForm):
+    year = forms.IntegerField(min_value=1900, max_value=2100)  # override
+
     class Meta:
         model = Car
-        fields = ['name', 'make', 'year']
+        fields = '__all__'
+        # widgets = {}  # ここでfield毎のwidgetをカスタマイズできる
+
 
     def clean(self):
         # custom validation
@@ -49,3 +58,9 @@ class CarForm(forms.ModelForm):
         # ...
         obj = self.instance
         return super().clean()  # maintain model validation
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name.lower() == 'hoge':
+            raise forms.ValidationError('name cannot be "hoge"')
+        return name

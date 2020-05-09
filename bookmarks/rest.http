@@ -1,0 +1,16 @@
+### Get an Access Token
+
+POST http://127.0.0.1:7000/locations/o/token/
+Authorization: Basic c0CfEB6mVRvHX09SywRdb9phdXvVHwxH9D5EfhGq WrUGRp8tow6bU36KBfxmixRQvvR68WEK5YBgY78ykyXPFciWreqE9k7UAZZndPlc5avcsiIK9eGFbFHIvHbrZEV5GRSgCTgKdLZbVg6iXAvVRyPjvsTaIt7YAVWqt2Bd
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=ganq&password=hawkeye1
+
+> {% client.global.set("access_token", response.body.access_token); %}
+
+### Get the Bookmarks by using Access Token
+
+GET http://127.0.0.1:7000/locations/bookmarks/
+Authorization: Bearer {{access_token}}
+
+###

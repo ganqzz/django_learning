@@ -1,3 +1,6 @@
-# Packages
+# Django REST Framework
 
-- django-filter
+- Upload images
+
+- Packages
+    * django-filter

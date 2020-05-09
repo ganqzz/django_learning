@@ -8,7 +8,8 @@
         {% if product.photo %}
           <p>
             <a href="{% url 'show-product' product.id %}">
-              <img width="500" src="{{ MEDIA_URL }}{{ product.photo }}"/>
+              <img width="200" height="100" style="object-fit: contain;"
+                   src="{{ MEDIA_URL }}{{ product.photo }}"/>
             </a>
           </p>
         {% endif %}

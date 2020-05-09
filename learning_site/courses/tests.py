@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.test import TestCase
 from django.utils import timezone
 
-from .models import Course, Step
+from .models import Course, Step, Quiz
 
 
 class CourseModelTests(TestCase):
@@ -33,6 +33,23 @@ class StepModelTests(TestCase):
             course=self.course
         )
         self.assertIn(step, self.course.step_set.all())
+
+
+class QuizModelTests(TestCase):
+    def setUp(self):
+        self.course = Course.objects.create(
+            title="Python Testing",
+            description="Learn to write tests in Python"
+        )
+
+    def test_step_creation(self):
+        step = Quiz.objects.create(
+            title="Review: Doctests",
+            description="Learn to write tests in your docstrings.",
+            course=self.course,
+            total_questions=5
+        )
+        self.assertIn(step, self.course.quiz_set.all())
 
 
 class CourseViewTests(TestCase):

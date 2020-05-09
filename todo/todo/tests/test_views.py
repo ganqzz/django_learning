@@ -51,23 +51,17 @@ class RegisterViewTestCase(TestCase):
 
     def test_register_returns_form_for_get(self):
         response = self.client.get(self.url)
+        content = response.content.decode(encoding='utf-8')
         self.assertTemplateUsed('register.html')
-        self.assertInHTML(
-            self.register_button,
-            response.content.decode(encoding='utf-8')
-        )
+        self.assertInHTML(self.register_button, content)
 
     def test_register_returns_form_for_invalid(self):
         response = self.client.post(self.url, self.bad_data)
+        content = response.content.decode(encoding='utf-8')
         self.assertTemplateUsed('register.html')
+        self.assertInHTML(self.register_button, content)
         self.assertInHTML(
-            self.register_button,
-            response.content.decode(encoding='utf-8')
-        )
-
-    def test_register_returns_form_error_for_invalid(self):
-        response = self.client.post(self.url, self.bad_data)
-        self.assertInHTML(
-            '<li>The two password fields didn&#39;t match.</li>',
-            response.content.decode(encoding='utf-8')
+            # require enclosing <tag>
+            '<strong>The two password fields didn’t match.</strong>',
+            content
         )

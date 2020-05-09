@@ -26,7 +26,7 @@ class Community(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.name, allow_unicode=True)
         # self.description_html = misaka.html(self.description)
         self.description_html = markdown2.markdown(self.description)
         super().save(*args, **kwargs)

@@ -9,8 +9,6 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
-from braces.views import PrefetchRelatedMixin
-
 from . import models
 
 
@@ -28,13 +26,18 @@ class CreateCommunity(LoginRequiredMixin, generic.CreateView):
         return resp
 
 
-class SingleCommunity(PrefetchRelatedMixin, generic.DetailView):
+class SingleCommunity(generic.DetailView):
     model = models.Community
-    prefetch_related = ("members",)
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("members")
 
 
 class AllCommunities(generic.ListView):
     model = models.Community
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("members", "posts")
 
 
 class JoinCommunity(LoginRequiredMixin, generic.RedirectView):
@@ -54,10 +57,8 @@ class JoinCommunity(LoginRequiredMixin, generic.RedirectView):
         except IntegrityError:
             messages.warning(
                 self.request,
-                ("You were already a member of <b>{}</b>.  "
-                 "Don't be sneaky!").format(
-                    community.name
-                )
+                "You were already a member of <b>{}</b>.  Don't be sneaky!"
+                    .format(community.name)
             )
         else:
             messages.success(
@@ -79,16 +80,10 @@ class LeaveCommunity(LoginRequiredMixin, generic.RedirectView):
                 community__slug=self.kwargs.get("slug")
             ).exclude(role=3).get()
         except models.CommunityMember.DoesNotExist:
-            messages.warning(
-                self.request,
-                "You can't leave this group."
-            )
+            messages.warning(self.request, "You can't leave this group.")
         else:
             membership.delete()
-            messages.success(
-                self.request,
-                "You've left the group!"
-            )
+            messages.success(self.request, "You've left the group!")
         return super().get(request, *args, **kwargs)
 
 

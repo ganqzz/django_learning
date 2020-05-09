@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 {% block title %}Create Task{% endblock %}
 
@@ -10,7 +10,7 @@
       <form method="POST" action="{% url 'task-delete' task.pk %}">
         {% csrf_token %}
         <button class="task__delete">
-          <span class="glyphicon glyphicon-remove"></span>
+          <i class="far fa-trash-alt"></i>
         </button>
       </form>
       <h1>Edit Task</h1>
@@ -19,20 +19,8 @@
     {% endif %}
 
     <form method="POST">
-      <div class="errors">
-        {{ form.errors }}
-      </div>
       {% csrf_token %}
-
-      <label>{{ form.title.label }}</label>
-      {% render_field form.title required="true" class+="form-control" %}
-
-      <label>{{ form.description.label }}</label>
-      {% render_field form.description rows="4" class+="form-control" %}
-
-      <label>{{ form.due_date.label }}</label>
-      {% render_field form.due_date type="date" class+="form-control" %}
-
+      {{ form | crispy }}
       <button class="btn btn-success btn-center btn-fullwidth" type="submit">
         {% if update %}
           Save

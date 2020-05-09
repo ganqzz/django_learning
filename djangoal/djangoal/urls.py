@@ -13,16 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
 
 from . import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', views.HomeView.as_view(), name='home'),
-    url(r'^hello/$', views.HelloWorldView.as_view(), name='hello'),
-    # url(r'teams/', include('teams.urls', namespace='teams')),
-    # url(r'teams/', include(('teams.urls', 'teams',))),  # solution 1
-    url(r'teams/', include('teams.urls')),  # solution 2
+    path('', views.HomeView.as_view(), name='home'),
+    path('admin/', admin.site.urls),
+    path('hello/', views.HelloWorldView.as_view(), name='hello'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # path('teams/', include('teams.urls', namespace='teams')),
+    # path('teams/', include(('teams.urls', 'teams',))),  # solution 1
+    path('teams/', include('teams.urls')),  # solution 2
 ]

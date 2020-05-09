@@ -1,12 +1,13 @@
 import os.path
 
-from django.conf import settings
 from rest_framework.test import APITestCase
 
+from shopping_site import settings
 from store.models import Product
 
 
 class ProductCRUDTestCase(APITestCase):
+    fixtures = ['store/data/fixtures.json']
 
     def test_create_product(self):
         initial_product_count = Product.objects.count()
@@ -40,7 +41,7 @@ class ProductCRUDTestCase(APITestCase):
         )
         self.assertRaises(
             Product.DoesNotExist,
-            Product.objects.get, id=product_id,
+            Product.objects.get, pk=product_id,
         )
 
     def test_list_products(self):
@@ -62,13 +63,14 @@ class ProductCRUDTestCase(APITestCase):
             },
             format='json',
         )
-        updated = Product.objects.get(id=product.id)
+        updated = Product.objects.get(pk=product.id)
         self.assertEqual(updated.name, 'New Product')
 
     def test_upload_product_photo(self):
         product = Product.objects.first()
         original_photo = product.photo
-        photo_path = os.path.join(settings.MEDIA_ROOT, 'products', 'vitamin-iron.jpg')
+        photo_path = os.path.join(settings.BASE_DIR,
+                                  'store/data/products/vitamin-multi.jpg')
         with open(photo_path, 'rb') as photo_data:
             response = self.client.patch('/api/v1/products/{}/'.format(product.id),
                                          {'photo': photo_data, },
@@ -79,8 +81,9 @@ class ProductCRUDTestCase(APITestCase):
         self.assertNotEqual(response.data['photo'], original_photo)
 
         try:
-            updated = Product.objects.get(id=product.id)
-            expected_photo = os.path.join(settings.MEDIA_ROOT, 'products', 'vitamin-iron')
+            updated = Product.objects.get(pk=product.id)
+            expected_photo = os.path.join(settings.MEDIA_ROOT,
+                                          'products', 'vitamin-multi')
             self.assertTrue(updated.photo.path.startswith(expected_photo))
         finally:
             os.remove(updated.photo.path)

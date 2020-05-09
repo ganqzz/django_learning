@@ -54,7 +54,7 @@ ROOT_URLCONF = 'community.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,7 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
 
-LOGIN_REDIRECT_URL = '/profile/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'index'  # URLにquery param "next"を付けた場合は、ここには来ない
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'

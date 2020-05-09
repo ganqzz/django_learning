@@ -1,12 +1,11 @@
 {% extends 'pizza/base.html' %}
-{% load crispy_forms_tags %}
 {% block content %}
   <h1>Order a Pizza</h1>
 
-  {# novalidate : for demo #}
+  {# novalidate : no client side validation #}
   <form action="{% url 'pizza:order' %}" method="post" novalidate>
     {% csrf_token %}
-    {{ pizzaform | crispy }}
+    {{ pizzaform.as_p }}
     <input type="submit" value="Order Pizza">
   </form>
 
@@ -14,7 +13,7 @@
   Want more than one pizza?
   <form action="{% url 'pizza:order-pizzas' %}" method="get">
     {% csrf_token %}
-    {{ multiple_form | crispy }}
+    {{ multiple_form.as_p }}
     <input type="submit" value="Get Pizzas">
   </form>
 {% endblock %}

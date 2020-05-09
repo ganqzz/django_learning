@@ -1,13 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 app_name = 'teams'  # application namespace
 
 urlpatterns = [
-    url(r'^$', views.TeamListView.as_view(), name='list'),
-    url(r'^(?P<pk>\d+)/$', views.TeamDetailView.as_view(), name='detail'),
-    url(r'^create/$', views.TeamCreateView.as_view(), name='create'),
-    url(r'^edit/(?P<pk>\d+)/$', views.TeamUpdateView.as_view(), name='update'),
-    url(r'^delete/(?P<pk>\d+)/$', views.TeamDeleteView.as_view(), name='delete'),
+    path('', views.TeamListView.as_view(), name='list'),
+    path('<int:pk>/', views.TeamDetailView.as_view(), name='detail'),
+    path('create/', views.TeamCreateView.as_view(), name='create'),
+    path('edit/<int:pk>/', views.TeamUpdateView.as_view(), name='update'),
+    path('delete/<int:pk>/', views.TeamDeleteView.as_view(), name='delete'),
 ]

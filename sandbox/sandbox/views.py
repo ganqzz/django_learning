@@ -13,9 +13,9 @@ def trailing_slash(request):
 
 @csrf_exempt
 def params(request):
-    if request.method =='GET':
+    if request.method == 'GET':
         res = str(dict(request.GET))
-    elif request.method =='POST':
+    elif request.method == 'POST':
         res = str(dict(request.POST))
     else:
         res = 'GET/POST method only'

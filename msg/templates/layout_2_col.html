@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body_content %}
+  <div class="main">
+    <div class="row">
+      <div class="col-left">
+        {% block left_content %}{% endblock %}
+      </div>
+      <div class="col-right">
+        {% block right_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,5 +1,5 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
 
 from .forms import ThreadForm, ReplyForm
 from .models import Thread
@@ -29,8 +29,11 @@ def thread(request, thread_id):
     return render(request, 'forum/thread.html', context)
 
 
-@require_POST
+@login_required
 def new_thread(request):
-    form = ThreadForm(request.POST)
-    thread = form.save()
-    return redirect('thread')
+    if request.method == 'POST':
+        form = ThreadForm(request.POST)
+        thread = form.save()
+        return redirect('thread', thread_id=thread.id)
+
+    return render(request, 'forum/new_thread.html', {'form': ThreadForm()})

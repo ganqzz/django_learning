@@ -1,26 +1,15 @@
-{% load bootstrap3 %}
-<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="modal-post-form">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">New post</h4>
-      </div>
-      <div class="modal-body">
-        <form method="POST" action="{% url 'posts:create' %}" id="postForm">
-          {% csrf_token %}
-          {% bootstrap_form form %}
-        </form>
-      </div>
-      <div class="modal-footer">
-        <div class="left-side">
-          <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Never mind</button>
-        </div>
-        <div class="divider"></div>
-        <div class="right-side">
-          <input type="submit" value="Post" form="postForm" class="btn btn-primary btn-simple">
-        </div>
-      </div>
+    <h2 class="modal-title">New post</h2>
+    <div class="modal-body">
+      <form method="POST" action="{% url 'posts:create' %}" id="postForm">
+        {% csrf_token %}
+        {{ form.as_p }}
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-modal-close="modal-post-form">Never mind</button>
+      <input type="submit" value="Post" form="postForm" class="btn btn-primary">
     </div>
   </div>
 </div>

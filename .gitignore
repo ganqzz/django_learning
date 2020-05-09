@@ -1,17 +1,20 @@
-/.idea
-/.vscode
+/.idea/
+/.vscode/
 /env/
 /venv/
 /.venv/
-/out
+/tmp/
+/out/
 *.py[cod]
 __pycache__/
-.mypy_cache
+.mypy_cache/
 *.log
 .env
 htmlcov/
 .coverage
+.pytest_cache/
 db.sqlite3
+static_root/
 
 !.keep
 !.gitkeep

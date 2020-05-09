@@ -89,7 +89,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = (
         IsSuperUser,
         permissions.DjangoModelPermissions,
-    )
+    )  # "AND"
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
     filter_backends = (OrderingFilter,)

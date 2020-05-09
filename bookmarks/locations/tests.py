@@ -1,4 +1,5 @@
 from datetime import timedelta
+from io import BytesIO
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -6,7 +7,6 @@ from django.db.models.aggregates import Count
 from django.test import TestCase
 from django.test import tag
 from django.utils import timezone
-from django.utils.six import BytesIO
 from oauth2_provider.models import get_application_model, get_access_token_model
 from rest_framework import status
 from rest_framework.parsers import JSONParser

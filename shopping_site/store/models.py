@@ -5,13 +5,15 @@ from django.utils import timezone
 class Product(models.Model):
     DISCOUNT_RATE = 0.10
 
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
     price = models.FloatField()
     sale_start = models.DateTimeField(blank=True, null=True, default=None)
     sale_end = models.DateTimeField(blank=True, null=True, default=None)
-    photo = models.ImageField(blank=True, null=True, default=None, upload_to='products')
+    photo = models.ImageField(blank=True,
+                              null=True,
+                              default=None,
+                              upload_to='products')  # MEDIA_ROOT + '/products'
 
     def is_on_sale(self):
         now = timezone.now()
@@ -34,38 +36,9 @@ class Product(models.Model):
         return '<Product object ({}) "{}">'.format(self.id, self.name)
 
 
-class ShoppingCart(models.Model):
-    TAX_RATE = 0.13
-
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
-
-    def subtotal(self):
-        amount = 0.0
-        for item in self.cart_items.all():
-            amount += item.quantity * item.product.get_price()
-        return round(amount, 2)
-
-    def taxes(self):
-        return round(self.TAX_RATE * self.subtotal(), 2)
-
-    def total(self):
-        return round(self.subtotal() * self.taxes(), 2)
-
-    def __repr__(self):
-        name = self.name or '[Guest]'
-        address = self.address or '[No Address]'
-        return '<ShoppingCart object ({}) "{}" "{}">'.format(self.id, name, address)
-
-
-class ShoppingCartItem(models.Model):
-    shopping_cart = models.ForeignKey(ShoppingCart,
-                                      related_name='cart_items',
-                                      related_query_name='cart_item',
-                                      on_delete=models.CASCADE)
+class Order(models.Model):
     product = models.ForeignKey(Product,
-                                related_name='cart_items',
+                                related_name='orders',
                                 on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
@@ -73,5 +46,5 @@ class ShoppingCartItem(models.Model):
         return round(self.quantity * self.product.current_price())
 
     def __repr__(self):
-        return '<ShoppingCartItem object ({}) {}x "{}">'.format(self.id, self.quantity,
-                                                                self.product.name)
+        return '<Order object ({}) {}x "{}">'.format(
+            self.id, self.quantity, self.product.name)

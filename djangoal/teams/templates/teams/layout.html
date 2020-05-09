@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block sidebar_content %}
+  {% if user.is_authenticated %}
+    <div>
+      <a href="{% url 'teams:create' %}" class="btn bold">Add new team</a>
+    </div>
+  {% endif %}
+{% endblock %}

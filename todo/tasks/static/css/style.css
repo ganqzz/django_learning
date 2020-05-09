@@ -27,7 +27,7 @@ button {
 
 .card-wrapper {
   position: absolute;
-  top: 90px;
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
   margin-bottom: 15vh;
@@ -92,11 +92,11 @@ button {
   width: 100%;
 }
 
-.glyphicon-blue {
-  color: #8FA9EA;
+.icon-blue {
+  color: #d6e1ff;
 }
 
-.glyphicon-red {
+.icon-red {
   color: #F57173;
 }
 
@@ -115,4 +115,107 @@ button {
 
 .errors > .errorlist > li > .errorlist {
   font-weight: normal;
+}
+
+/* shadow */
+.levitate {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.levitate:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.raised {
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+/* tasks */
+.task__list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.task__item {
+  border-bottom: 1px solid #e8e8e8;
+  float: left;
+  width: 100%;
+  position: relative;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  padding-right: 2.5em;
+}
+
+.task__list ul li:last-of-type {
+  border-bottom: 0;
+}
+
+.task__item .title {
+  font-weight: bold;
+  margin: 5px 0 0;
+}
+
+.task__item .title.complete {
+  color: #F57173;
+  text-decoration: line-through;
+}
+
+.task__item .description,
+.task__item .due {
+  font-weight: normal;
+  opacity: 0.8;
+  padding-top: 5px;
+}
+
+.task__item .due {
+  font-size: 0.8em;
+}
+
+.task__item button[type='submit'] {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.task__item .far {
+  font-size: 2em;
+}
+
+.task__add {
+  border-radius: 1000px;
+  background: #F57173;
+  position: absolute;
+  cursor: pointer;
+  bottom: -0.8em;
+  left: 50%;
+  font-size: 2em;
+  padding: 3px 15px;
+  color: white;
+  font-weight: bold;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
+}
+
+.task__add:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.task__add span {
+  position: relative;
+  top: -2px;
+}
+
+.task__delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #e74c3c;
+}
+
+.task__delete .far {
+  font-size: 2em;
 }

@@ -1,15 +1,15 @@
 {% extends "posts/layout.html" %}
 
-{% block pre_post_content %}
-  <div class="col-md-4">
-    <h4>{{ post_user.get_short_name }}</h4>
-    <strong>@{{ post_user.username }}</strong>
+{% block left_content %}
+  <div class="card card-with-shadow">
+    <h3>{{ post_user.get_short_name }}</h3>
+    <span>@{{ post_user.username }}</span>
     {{ post_user.bio }}
   </div>
 {% endblock %}
 
-{% block post_content %}
-  <div class="col-md-8">
+{% block right_content %}
+  <div class="content">
     {% for post in post_list %}
       {% include "posts/_post.html" %}
     {% endfor %}

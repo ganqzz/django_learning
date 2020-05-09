@@ -7,10 +7,10 @@ from . import models
 
 User = get_user_model()
 
-
 class PostTestCaseBase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="kennethlove")
+        self.user = User.objects.create(username="testuser1", email="testuser1@example.com")
+        self.user2 = User.objects.create(username="testuser2", email="testuser2@example.com")
 
 
 class PostModel(PostTestCaseBase):
@@ -51,8 +51,7 @@ class PostPublicViews(PostTestCaseBase):
         )
 
     def test_user_list(self):
-        user2 = User.objects.create(username="testuser")
-        msg = models.Post.objects.create(user=user2, message="Not by Kenneth")
+        msg = models.Post.objects.create(user=self.user2, message="Not by testuser1")
         resp = self.client.get(
             reverse("posts:for_user", kwargs={"username": self.user.username})
         )
@@ -100,18 +99,17 @@ class PostPrivateViews(PostTestCaseBase):
         self.assertEqual(models.Post.objects.count(), 0)
 
     def test_delete_others_post_with_login(self):
-        user2 = User.objects.create(username="testuser")
         post = models.Post.objects.create(
-            user=user2,
+            user=self.user2,
             message="Time is short"
         )
         self.client.force_login(self.user)
         url = reverse("posts:delete", kwargs={"pk": post.pk})
         resp = self.client.get(url)
-        self.assertNotEqual(resp.status_code, 200)
+        self.assertNotEqual(resp.status_code, 200)  # 404
 
         resp2 = self.client.post(url, follow=True)
-        self.assertNotEqual(resp2.status_code, 200)
+        self.assertNotEqual(resp2.status_code, 200)  # 404
         self.assertEqual(models.Post.objects.count(), 1)
 
     def test_delete_post_without_login(self):
@@ -122,8 +120,7 @@ class PostPrivateViews(PostTestCaseBase):
         )
         url = reverse("posts:delete", kwargs={"pk": post.pk})
         resp = self.client.get(url)
-        self.assertNotEqual(resp.status_code, 200)
+        self.assertNotEqual(resp.status_code, 200)  # 302
 
         resp2 = self.client.post(url, follow=True)
-        self.assertNotEqual(resp2.status_code, 200)
         self.assertEqual(models.Post.objects.count(), 1)

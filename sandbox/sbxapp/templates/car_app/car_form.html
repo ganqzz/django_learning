@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Car Form ({{ form.instance.name|default:'New' }}){% endblock %}
+{% block content %}
+  <div class="container">
+    <form method="POST" novalidate>
+      {{ form.as_p }}
+      {% csrf_token %}
+      <button class="button" type="submit">Submit</button>
+    </form>
+  </div>
+{% endblock %}

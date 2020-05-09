@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="page-title">New Thread</div>
+
+  <div>
+    <a href="{% url 'index' %}" class="btn btn-outline">&leftarrow; Back to Threads</a>
+  </div>
+  <form method="POST" role="form" id="thread-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary" form="thread-form">Submit</button>
+  </form>
+{% endblock %}

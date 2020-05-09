@@ -16,7 +16,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             'email',
             'comment',
             'rating',
-            'created_at'
+            'created_at',
         )
         model = models.Review
 

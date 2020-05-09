@@ -21,12 +21,13 @@ def order(request):
         form = PizzaForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            messages.success(request,
-                             'Thanks for ordering! Your {} {} and {} pizza is on its way!'.format(
-                                 instance.get_size_display(),
-                                 instance.topping1,
-                                 instance.topping2,
-                             ))
+            messages.success(
+                request,
+                'Thanks for ordering! Your {} {} and {} pizza is on its way!'.format(
+                    instance.get_size_display(),
+                    instance.topping1,
+                    instance.topping2,
+                ))
             return redirect('pizza:detail', pk=instance.pk)
         else:
             messages.warning(request, 'Not ordered, please try again.')
@@ -48,7 +49,8 @@ def detail(request, pk):
         form = PizzaForm(request.POST, instance=pizza)
         if form.is_valid():
             instance = form.save()
-            messages.success(request, 'Your order has been updated successfully.')
+            messages.success(
+                request, 'Your order has been updated successfully.')
             return redirect('pizza:detail', pk=instance.pk)
         else:
             messages.warning(request, 'Your order has not been updated.')

@@ -5,11 +5,11 @@ from django.core.files.uploadedfile import UploadedFile
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
+from django.views import View, generic
 from django.views.decorators.http import require_POST
 
 from .forms import ExampleForm, UploadFileForm, HashForm, CarForm
-from .models import DtDemo, Hash, Car
+from .models import DtDemo, Hash, Car, Post
 
 
 def home(request):
@@ -101,6 +101,8 @@ def create_hash(request):
     return render(request, 'hashing/create_hash.html', {'form': form})
 
 
+# --- Car app
+
 def car_list(request):
     """ / """
     cars = Car.objects.all()
@@ -108,25 +110,31 @@ def car_list(request):
     return render(request, 'car_app/car_list.html', context)
 
 
-class CarView(View):
+def car_detail(request, pk):
+    """ /<int:pk>/ """
+    car = get_object_or_404(Car, pk=pk)
+    context = {'car': car}
+    return render(request, 'car_app/car_detail.html', context)
+
+
+class CarEditView(View):
     """
     /create/
-    /<int:pk>/
+    /<int:pk>/edit
     """
     form_class = CarForm
     model = Car
+    template = 'car_app/car_form.html'
 
     def get(self, request, pk=None):
-        if pk:  # show detail form
+        if pk:  # show update form
             car = get_object_or_404(self.model, pk=pk)
             form = self.form_class(instance=car)
-            template_name = 'car_app/car_detail_form.html'
         else:  # show create form
             form = self.form_class()
-            template_name = 'car_app/car_create_form.html'
 
         context = {'form': form}
-        return render(request, template_name, context)
+        return render(request, self.template, context)
 
     def post(self, request, pk=None):
         if pk:  # update
@@ -136,11 +144,14 @@ class CarView(View):
             form = self.form_class(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data['name'])
-            form.save()
+            print(form.cleaned_data)
+            instance = form.save()
+            print(instance.pk)
+            return redirect('sbxapp:car-detail', pk=instance.pk)
         else:
-            pass  # 省略
-        return redirect('sbxapp:car-list')
+            print(form.errors)
+            context = {'form': form}
+            return render(request, self.template, context)
 
 
 @require_POST
@@ -149,3 +160,16 @@ def car_delete(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.delete()
     return redirect('sbxapp:car-list')
+
+
+# --- N+1 problem demo
+
+class PostIndex(generic.ListView):
+    # template_name: <app_name>/<model_name>_list.html
+    model = Post
+
+
+class PostIndex2(generic.ListView):
+    model = Post
+    # eager loading: select_related("One"), prefetch_related("Many")
+    queryset = Post.objects.select_related('category').prefetch_related('tags')
