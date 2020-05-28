@@ -1,16 +1,15 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+
 from tasks.forms import TaskForm
 from tasks.models import Task
-
 from . import factories
 
 
 class TaskListViewTestCase(TestCase):
 
     def setUp(self):
-        self.client = Client()
         self.url = reverse('tasks')
         self.user = factories.UserFactory()
         self.tasks = factories.TaskFactory.create_batch(10, owner=self.user)
@@ -37,9 +36,17 @@ class TaskListViewTestCase(TestCase):
 class NewTaskViewTestCase(TestCase):
 
     def setUp(self):
-        self.client = Client()
         self.url = reverse('task-add')
         self.user = factories.UserFactory()
+
+    def test_task_view_shows_create_form(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertTemplateUsed(response, 'tasks/task_form.html')
+        self.assertEqual(TaskForm, response.context['form'].__class__)
+        self.assertIsNone(response.context.get('task'))
 
     def test_create_task_always_forces_user(self):
         other_user = factories.UserFactory()
@@ -57,7 +64,6 @@ class NewTaskViewTestCase(TestCase):
 class TaskViewTestCase(TestCase):
 
     def setUp(self):
-        self.client = Client()
         self.user = factories.UserFactory()
         self.task = factories.TaskFactory.create(owner=self.user)
         self.url = reverse('task-edit', args=[self.task.id])
@@ -67,15 +73,14 @@ class TaskViewTestCase(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertTemplateUsed('task.html')
+        self.assertTemplateUsed(response, 'tasks/task_form.html')
         self.assertEqual(TaskForm, response.context['form'].__class__)
-        self.assertTrue(response.context['update'])
+        self.assertIsNotNone(response.context.get('task'))
 
 
 class ToggleCompleteViewTestCase(TestCase):
 
     def setUp(self):
-        self.client = Client()
         self.user = factories.UserFactory()
         self.client.force_login(self.user)
 

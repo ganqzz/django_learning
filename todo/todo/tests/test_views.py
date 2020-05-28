@@ -1,5 +1,5 @@
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from django.test import TestCase
 from django.urls import reverse
 
 
@@ -8,7 +8,6 @@ class HomeViewTestCase(TestCase):
     def setUp(self):
         self.username = 'myuser'
         self.password = 'valid_password1'
-        self.client = Client()
         self.url = reverse('home')
 
         User.objects.create_user(self.username, 'email@test.com', self.password)
@@ -26,7 +25,6 @@ class HomeViewTestCase(TestCase):
 class RegisterViewTestCase(TestCase):
 
     def setUp(self):
-        self.client = Client()
         self.username = 'myuser'
         self.url = reverse('register')
         self.data = {

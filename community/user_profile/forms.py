@@ -6,7 +6,7 @@ from .models import Profile
 
 
 class ExtendedUserCreationForm(UserCreationForm):
-    # Modelではblank=Trueとなっているので、Formでrequired=Trueとして必須フィールドにする
+    # Userモデルではblank=Trueとなっているので、Form側でrequired=Trueとして必須フィールドにする
     email = forms.EmailField(required=True)
 
     class Meta:

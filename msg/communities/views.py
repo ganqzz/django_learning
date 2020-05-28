@@ -4,9 +4,9 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin
 )
 from django.contrib.auth.models import Group, Permission
-from django.urls import reverse
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views import generic
 
 from . import models
@@ -87,12 +87,9 @@ class LeaveCommunity(LoginRequiredMixin, generic.RedirectView):
         return super().get(request, *args, **kwargs)
 
 
-class ChangeStatus(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    generic.RedirectView
-):
-    permission_required = "communities.ban_member"
+class ChangeStatus(LoginRequiredMixin, PermissionRequiredMixin,
+                   generic.RedirectView):
+    permission_required = ("communities.ban_member",)  # Model.Metaで定義したpermission
 
     def has_permission(self):
         return any([

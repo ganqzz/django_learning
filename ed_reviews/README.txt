@@ -24,5 +24,3 @@ python manage.py drf_create_token <user>
     REST Frameworkに関してもアップデート対応。
 - CourseSerializerに、HyperlinkedIdentityField（自分）を追加。
     HyperlinkedModelSerializerがやっていることと同じ。
-- UnorderedObjectListWarning: Model Metaにordering追加。QuerySetのorder_by()では解消せず（2.1.3）
-    Meta orderingの代わりにViewSetのorderingを使用する（3.x）

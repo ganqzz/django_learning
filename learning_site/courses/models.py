@@ -18,17 +18,18 @@ class Course(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(default='', max_length=100)
     published = models.BooleanField(default=False)
-    is_live = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='i')
 
     def __str__(self):
         return self.title
 
     def time_to_complete(self):
+        # to avoid recursive import
         from courses.templatetags.course_extras import time_estimate
         return '{} min.'.format(time_estimate(len(self.description.split())))
 
 
+# Abstract Inheritance
 class Step(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -48,7 +49,7 @@ class Text(Step):
 
     def get_absolute_url(self):
         return reverse('courses:text', kwargs={
-            'course_pk': self.course_id,
+            'course_pk': self.course_id,  # course.pkの場合、追加クエリが発生する
             'step_pk': self.id
         })
 
@@ -70,6 +71,7 @@ class Quiz(Step):
         return '{}/{}'.format(math.ceil(self.total_questions * 0.7), self.total_questions)
 
 
+# Multi-Table Inheritance
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)

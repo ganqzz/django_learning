@@ -97,6 +97,7 @@ class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         return response
 
 
+# demo用に簡略化したAPIView
 class ProductStats(GenericAPIView):
     lookup_field = 'pk'  # lookup_url_kwarg
     serializer_class = ProductStatSerializer

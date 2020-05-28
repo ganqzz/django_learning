@@ -5,8 +5,9 @@ from django.core.files.uploadedfile import UploadedFile
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.views import View, generic
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from .forms import ExampleForm, UploadFileForm, HashForm, CarForm
 from .models import DtDemo, Hash, Car, Post
@@ -31,6 +32,17 @@ def dt_all2(request):
     response = list(dt_demos)
     # return JsonResponse({'results': response})
     return JsonResponse(response, safe=False)  # listなどdict以外を返すとき
+
+
+def tags_filters(request):
+    now = timezone.now()
+    context = {
+        'dt': now,
+        'yesterday': now - timezone.timedelta(days=1),
+        'tomorrow': now + timezone.timedelta(days=1),
+        'dataset': [f'row {i}' for i in range(11)],
+    }
+    return render(request, 'sbxapp/tags_filters.html', context)
 
 
 def form_example(request):
@@ -60,6 +72,8 @@ def upload_file(request):
     return render(request, 'sbxapp/upload.html', {'form': form})
 
 
+# --- Hashing
+
 def get_hashed_text(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
@@ -77,6 +91,7 @@ def hash_detail(request, hash):
     return render(request, 'hashing/hash_detail.html', {'hash': hash})
 
 
+@require_GET
 def get_hash_ajax(request):
     text = request.GET['text']
     return JsonResponse({'hash': get_hashed_text(text)})

@@ -31,15 +31,13 @@ def order(request):
             return redirect('pizza:detail', pk=instance.pk)
         else:
             messages.warning(request, 'Not ordered, please try again.')
-            multiple_form = MultiplePizzaForm()
-            return render(request, 'pizza/order.html',
-                          {'multiple_form': multiple_form, 'pizzaform': form})
 
-    # GET
+    else:  # GET
+        form = PizzaForm()
+
     multiple_form = MultiplePizzaForm()
-    form = PizzaForm()
     return render(request, 'pizza/order.html',
-                  {'multiple_form': multiple_form, 'pizzaform': form})
+                  {'pizzaform': form, 'multiple_form': multiple_form})
 
 
 # detail & edit
@@ -54,9 +52,8 @@ def detail(request, pk):
             return redirect('pizza:detail', pk=instance.pk)
         else:
             messages.warning(request, 'Your order has not been updated.')
-            return render(request, 'pizza/order_detail.html', {'pizzaform': form})
 
-    # GET detail
+    # GET or invalid POST (reset input)
     form = PizzaForm(instance=pizza)
     return render(request, 'pizza/order_detail.html', {'pizzaform': form})
 

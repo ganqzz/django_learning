@@ -1,11 +1,11 @@
 {% extends "courses/layout.html" %}
-{% load course_extras %}
 
 {% block title %}
   {{ question|default:"New Answer" }} | {{ question.quiz.course.title }} {{ block.super }}
 {% endblock %}
 
 {% block breadcrumbs %}
+  <li><a href="{% url 'courses:list' %}">Courses</a></li>
   <li>
     <a href="{% url 'courses:detail' pk=question.quiz.course.pk %}">{{ question.quiz.course.title }}</a>
   </li>
@@ -16,17 +16,17 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row columns">
+  <div class="row">
     {{ block.super }}
   </div>
-  <div class="row columns">
+  <div class="">
     <h1>Answers</h1>
     <form method="POST" action="">
       {% csrf_token %}
       <section>
-        {{ formset }}
+        {{ formset.as_p }}
       </section>
-      <input type="submit" class="button" value="Save">
+      <input type="submit" class="btn btn-primary" value="Save">
     </form>
   </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Required meta tags -->
@@ -16,17 +16,18 @@
     <li class="navbar-menu-item"><a href="{% url 'pizza:order' %}">Order Pizza</a></li>
   </ul>
 </nav>
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message|safe }}
+        <a href="#" class="close">&times;</a>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 <div class="main">
-  {% if messages %}
-    <div class="messages">
-      {% for message in messages %}
-        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-          <span>{{ message|safe }}</span>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
   {% block content %}{% endblock %}
-</div> <!-- /container -->
+</div>
 </body>
 </html>

@@ -1,24 +1,20 @@
-from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect
-from .models import Task
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
 from .forms import TaskForm
 from .mixins import SuccessTaskListMixin, TaskOwnedByUserMixin
+from .models import Task
 
 
-class TaskListView(TemplateView):
+class TaskListView(ListView):
     """
     View to view tasks. Views tasks for current logged in user
     """
-    template_name = 'task_list.html'
+    model = Task
+    context_object_name = 'tasks'
 
     def get_queryset(self):
-        return Task.objects.filter(owner=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        context = super(TaskListView, self).get_context_data(**kwargs)
-        context['tasks'] = self.get_queryset()
-        return context
+        return Task.objects.filter(owner=self.request.user)  # limited by login user
 
 
 class NewTaskView(SuccessTaskListMixin, CreateView):
@@ -26,7 +22,7 @@ class NewTaskView(SuccessTaskListMixin, CreateView):
     View to create a task. Owner is set upon validation. Redirect
     to task list upon completion.
     """
-    template_name = 'task.html'
+    model = Task
     form_class = TaskForm
 
     def form_valid(self, form):
@@ -50,19 +46,14 @@ class TaskView(TaskOwnedByUserMixin, SuccessTaskListMixin, UpdateView):
     View to view and edit a task. Must be owner to edit a task. Redirect
     to task list upon completion.
     """
-    template_name = 'task.html'
+    model = Task
     form_class = TaskForm
     pk_url_kwarg = 'task_id'
 
     def get_queryset(self):
         if hasattr(self.request, 'user') and self.request.user.is_active:
             return Task.objects.filter(owner=self.request.user)
-        return Task.objects.none()
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(TaskView, self).get_context_data(**kwargs)
-        context['update'] = True
-        return context
+        return Task.objects.none()  # 404 not empty form
 
 
 def toggle_complete_view(request, task_id):

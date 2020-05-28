@@ -15,10 +15,9 @@ def newest_course():
     return Course.objects.filter(published=True).latest('created_at')
 
 
-@register.inclusion_tag('courses/course_nav.html')
+@register.inclusion_tag('courses/_course_nav.html')
 def nav_courses_list():
     """ Returns dictionary of courses to display as navigation pane """
-    # courses = Course.objects.all()
     courses = Course.objects \
                   .filter(published=True) \
                   .order_by('-created_at') \
@@ -40,4 +39,4 @@ def time_estimate(word_count):
 def markdown_to_html(markdown_text):
     """ Converts Markdown text to HTML """
     html_body = markdown2.markdown(markdown_text)
-    return mark_safe(html_body)
+    return mark_safe(html_body)  # omit "safe" filters in the templates

@@ -39,7 +39,7 @@ class TasksViewsStaticLiveServerTestCase(StaticLiveServerTestCase):
         self.selenium.find_element_by_css_selector('button[type="submit"]').click()
 
     def get_task_check_button(self):
-        return self.selenium.find_element_by_css_selector('.task-complete i')
+        return self.selenium.find_element_by_css_selector('.task-complete :first-child')
 
     def test_toggle(self):
         self.login()

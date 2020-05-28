@@ -4,6 +4,11 @@ ORM
 - Model.save()
     * save() does not call full_clean(). Model.objects.create() also the same.
 
+- bulk_create(), bulk_update()
+    クエリの削減に貢献する。ただし、いくつかの制限がある。
+- get_or_create(), get_or_update()
+
+- examples
 ```
 # filtering
 >>> from courses.models import *

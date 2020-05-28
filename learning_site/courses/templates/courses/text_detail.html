@@ -4,20 +4,22 @@
 {% block title %}{{ step.title }} | {{ step.course.title }} {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
+  <li><a href="{% url 'courses:list' %}">Courses</a></li>
   <li><a href="{% url 'courses:detail' pk=step.course.pk %}">{{ step.course.title }}</a></li>
+  <li>{{ step.title }}</li>
 {% endblock %}
 
 {% block content %}
-  <div class="row columns">
+  <div class="">
     <article>
       {{ block.super }}
       <h1>{{ step.title }}</h1>
-      {{ step.description | linebreaks }}
+      {{ step.description|linebreaks }}
       {{ step.content|markdown_to_html }}
       {#    {% with con=step.content %}#}
       <hr/>
       {% with step.content as con %}
-        Content: {{ con | wordcount }} words.
+        Content: {{ con|wordcount }} words.
         Estimated time to complete: {{ con|wordcount|time_estimate }}
         minute{{ con|wordcount|time_estimate|pluralize }}.
       {% endwith %}

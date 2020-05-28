@@ -1,9 +1,7 @@
 import markdown2
-# import misaka
-
 from django.conf import settings
-from django.urls import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 MEMBERSHIP_CHOICES = (
@@ -27,7 +25,6 @@ class Community(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name, allow_unicode=True)
-        # self.description_html = misaka.html(self.description)
         self.description_html = markdown2.markdown(self.description)
         super().save(*args, **kwargs)
 

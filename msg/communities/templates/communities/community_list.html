@@ -11,11 +11,13 @@
 {% block right_content %}
   <div class="content">
     {% for community in object_list %}
-      <a href="{% url 'communities:single' slug=community.slug %}">
-        <h3 class="title">{{ community.name }}</h3>
+      <a href="{% url 'communities:single' slug=community.slug %}" class="title">
+        <h3>{{ community.name }}</h3>
       </a>
       <div class="hpad">
-        {{ community.description_html|safe }}
+        <div class="markdown">
+          {{ community.description_html|safe }}
+        </div>
         <div class="row">
           <div class="col">
             <span class="badge">{{ community.members.count }}</span>

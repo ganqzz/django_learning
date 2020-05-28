@@ -11,7 +11,7 @@ class PackageSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    STREET_ADDRESS_ERROR = 'Street address must be in the format "11 Abc St"'
+    STREET_ADDRESS_ERROR = "Street address must be in the format '11 Abc St'"
 
     class Meta:
         model = Booking
@@ -22,6 +22,4 @@ class BookingSerializer(serializers.ModelSerializer):
         regexp = re.compile(r'\d+ \w+ \w+')
         if regexp.search(value):
             return value
-        raise serializers.ValidationError(
-            self.STREET_ADDRESS_ERROR
-        )
+        raise serializers.ValidationError(self.STREET_ADDRESS_ERROR)

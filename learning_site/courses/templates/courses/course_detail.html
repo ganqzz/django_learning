@@ -1,10 +1,15 @@
 {% extends "courses/layout.html" %}
-{% load humanize course_extras %}
+{% load course_extras %}
 
 {% block title %}{{ course.title }}{% endblock %}
 
+{% block breadcrumbs %}
+  <li><a href="{% url 'courses:list' %}">Courses</a></li>
+  <li>{{ course.title }}</li>
+{% endblock %}
+
 {% block content %}
-  <div class="row columns">
+  <div class="">
     {{ block.super }}
     <article>
       <h1 class="">{{ course.title }}</h1>
@@ -13,16 +18,10 @@
         {{ course.description|markdown_to_html }}
       </div>
 
-      {#    <p>There are#}
-      {#      {{ course.step_set.all|length }}#}
-      {#      {{ course.step_set.count|apnumber }}#}
-      {#      step{{ course.step_set.count|pluralize }} in this#}
-      {#      course: {{ course.step_set.all | join:", " }}</p>#}
-
       <dl>
         {% for step in steps %}
           <dt>
-            <a href="{{ step.get_absolute_url }}">{{ step.title }}</a>
+            <a href="{{ step.get_absolute_url }}"><h3>{{ step.title }}</h3></a>
           </dt>
           <dd>{{ step.description|markdown_to_html }}</dd>
           {% if step.question_set.all %}
@@ -36,7 +35,7 @@
     </article>
     {% if user.is_authenticated %}
       <hr/>
-      <a href="{% url 'courses:create-quiz' course_pk=course.pk %}" class="button">New Quiz</a>
+      <a href="{% url 'courses:create-quiz' course_pk=course.pk %}" class="btn btn-primary">New Quiz</a>
     {% endif %}
   </div>
 {% endblock %}

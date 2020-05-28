@@ -6,18 +6,19 @@ from . import models
 class QuizForm(forms.ModelForm):
     class Meta:
         model = models.Quiz
-        fields = [
-            'title',
-            'description',
-            'order',
-            'total_questions',
-        ]
+        fields = ['title', 'description', 'order', 'total_questions', ]
 
 
 class QuestionForm(forms.ModelForm):
+    # TODO: Sortableが空のformをうまく扱えない
     class Media:
-        css = {'all': ('courses/css/order.css',)}
-        js = ('courses/js/order.js',)
+        # css = {'all': ('courses/css/order.css',)}
+        js = (
+            # 'courses/js/vendor/Sortable.min.js',
+            # 'courses/js/vendor/jquery-sortable.js',
+            # 'courses/js/order.js',
+            'courses/js/vendor/jquery.formset.js',
+        )
 
 
 class TrueFalseQuestionForm(QuestionForm):
@@ -38,7 +39,8 @@ class AnswerForm(forms.ModelForm):
         fields = ['order', 'text', 'correct', ]
 
 
-AnswerFormSet = forms.modelformset_factory(models.Answer, form=AnswerForm, extra=2)
+AnswerFormSet = forms.modelformset_factory(models.Answer, form=AnswerForm,
+                                           can_delete=True, extra=2)
 
 AnswerInlineFormSet = forms.inlineformset_factory(
     models.Question, models.Answer,

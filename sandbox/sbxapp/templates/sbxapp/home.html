@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
+  <p><a href="{% url 'sbxapp:tags_filters' %}">Template tags and filters</a></p>
   <p><a href="{% url 'sbxapp:form-example' %}">Form Example</a></p>
   <p><a href="{% url 'sbxapp:upload-file' %}">Upload File</a></p>
   <p><a href="{% url 'sbxapp:hashing-home' %}">Hashing</a></p>

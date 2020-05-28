@@ -28,6 +28,9 @@ class Booking(models.Model):
     street_address = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ('id',)
+
     def __str__(self):
         return '{}, {}'.format(self.name, self.email_address)
 

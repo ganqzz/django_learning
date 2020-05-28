@@ -8,7 +8,8 @@
       "description": "Learn the basics of Python",
       "teacher": 1,
       "subject": "",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -20,7 +21,8 @@
       "description": "Learn about list, dict, and tuple",
       "teacher": 1,
       "subject": "",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -32,7 +34,8 @@
       "description": "Learn about Python's classes",
       "teacher": 1,
       "subject": "",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -44,7 +47,8 @@
       "description": "## Testing is Amazing!\r\n\r\nLearn to test your Python applications with unittest and doctest!\r\n\r\nThings you will learn:\r\n\r\n- unittest\r\n- doctest",
       "teacher": 1,
       "subject": "",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -56,7 +60,8 @@
       "description": "In Django Basics, you learned how to set up the skeleton of a video tutorial library. But for a real-world application, you\u2019d probably want more flexibility and functionality in your websites.\r\n\r\nDjango offers lots of built-in options for using templates to make your site dynamic and flexible, and makes it easy for you to build the extra things you need. In this course, learn about more complex template inheritance, how to make use of the vast array of built-in tags and filters Django has, and how to grow your own tags and filters for the functionality that Django doesn\u2019t provide. By the time you finish this course, you will have a deeper understanding of how you can make Django\u2019s templates work for your project, as well as a fully fleshed out video tutorial site!",
       "teacher": 6,
       "subject": "Python",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -68,7 +73,8 @@
       "description": "This course covers the very basics of Android development. We will build a simple app that will serve up some fun facts when you tap on a button. We introduce you to programming in Android, a tool for Android development called Android Studio, and some very basic concepts of the Android Software Development Kit, or SDK. By the end you will have a good idea of how a basic app works, and you will be armed with the knowledge to start building more.",
       "teacher": 5,
       "subject": "Android",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -80,7 +86,8 @@
       "description": "Activities are a crucial component of almost any Android app. In this course we will learn about the lifecycle of our activities, and how we can handle various unexpected changes. We'll also see how to correctly handle a device rotation as well as how to save data using SharedPreferences. To top it all off, at the end of this course you'll get a chance to test your Android knowledge with a project.",
       "teacher": 5,
       "subject": "Android",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -92,7 +99,8 @@
       "description": "In SQL Basics we\u2019ll take a look at what databases are and how you can retrieve information from them. Databases can store massive amounts of information to be retrieved at a later date. Databases act as the memory for dynamic web sites or mobile apps.",
       "teacher": 4,
       "subject": "SQL",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -104,7 +112,8 @@
       "description": "At the heart of a dynamic application is a database. Whether the application is an eCommerce, sports team, social network or a productivity app on your phone the data needs to change over time.\r\n\r\nIn this course we'll take a look at the underpinning SQL statements that are needed for every dynamic application.",
       "teacher": 4,
       "subject": "SQL",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -116,7 +125,8 @@
       "description": "jQuery Basics covers why you'd want to use jQuery, what it is and how to include it in your projects. You'll build several projects over the course to give you the confidence to integrate jQuery in your own projects and add that level of flair and interactivity to any site you work on.",
       "teacher": 4,
       "subject": "JavaScript",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -128,7 +138,8 @@
       "description": "Node.js is a versatile platform for building all sorts of applications. In this course, we're going to make a dynamic website that displays a Treehouse student's profile information by creating a server that will dynamically generate content, handle URLs, read from files and build a simple template engine.",
       "teacher": 4,
       "subject": "JavaScript",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -140,7 +151,8 @@
       "description": "In this course you will gain all the knowledge you will need to build an interactive command line program in Java. No prior programming experience is required. You will create an interactive game that prompts users for different parts of a sentence and then generates a story using those words.",
       "teacher": 3,
       "subject": "Java",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -152,7 +164,8 @@
       "description": "Java is an Object Oriented Programming language. Literally everything is an object, so understanding them is critical to your Java foundational base.\r\n\r\nIn this course, we will learn how to create, use and express ideas using objects.",
       "teacher": 3,
       "subject": "Java",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -164,7 +177,8 @@
       "description": "In this course we are going to deal with different approaches of storing, accessing, and bending data to your will. By definition, a data structure is a particular way of organizing data so that it can be used efficiently. It's time to get more efficient.",
       "teacher": 3,
       "subject": "Java",
-      "published": true
+      "published": true,
+      "status": "p"
     }
   },
   {
@@ -176,7 +190,21 @@
       "description": "This project will show you how to build a simple website using the PHP programming language. The web site, a media library, will let you organize and display your Books, Movies and Music. You could easily use this project to create a website that lets you organize and display any type of item: Branch Locations, Products, Services, Events, even Courses like we have here on Treehouse.",
       "teacher": 7,
       "subject": "PHP",
-      "published": true
+      "published": true,
+      "status": "p"
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 22,
+    "fields": {
+      "created_at": "2020-05-20T05:00:16.912Z",
+      "title": "Sandobox",
+      "description": "# Sandbox",
+      "teacher": 1,
+      "subject": "Sandbox",
+      "published": false,
+      "status": "i"
     }
   },
   {
@@ -199,6 +227,17 @@
       "order": 0,
       "course": 1,
       "content": "Launch the shell with \"python\".\r\n\r\nYou can exit the shell by entering \"exit()\" or \"quit()\".\r\n\r\nYou can also exit the shell by pressing CTRL and D."
+    }
+  },
+  {
+    "model": "courses.text",
+    "pk": 3,
+    "fields": {
+      "title": "Sandbox Text",
+      "description": "### Sandbox Text",
+      "order": 0,
+      "course": 22,
+      "content": ""
     }
   },
   {
@@ -475,31 +514,6 @@
     }
   },
   {
-    "model": "courses.truefalsequestion",
-    "pk": 1,
-    "fields": {}
-  },
-  {
-    "model": "courses.truefalsequestion",
-    "pk": 3,
-    "fields": {}
-  },
-  {
-    "model": "courses.truefalsequestion",
-    "pk": 4,
-    "fields": {}
-  },
-  {
-    "model": "courses.truefalsequestion",
-    "pk": 12,
-    "fields": {}
-  },
-  {
-    "model": "courses.truefalsequestion",
-    "pk": 13,
-    "fields": {}
-  },
-  {
     "model": "courses.multiplechoicequestion",
     "pk": 2,
     "fields": {
@@ -556,11 +570,36 @@
     }
   },
   {
+    "model": "courses.truefalsequestion",
+    "pk": 1,
+    "fields": {}
+  },
+  {
+    "model": "courses.truefalsequestion",
+    "pk": 3,
+    "fields": {}
+  },
+  {
+    "model": "courses.truefalsequestion",
+    "pk": 4,
+    "fields": {}
+  },
+  {
+    "model": "courses.truefalsequestion",
+    "pk": 12,
+    "fields": {}
+  },
+  {
+    "model": "courses.truefalsequestion",
+    "pk": 13,
+    "fields": {}
+  },
+  {
     "model": "courses.answer",
     "pk": 1,
     "fields": {
       "question": 2,
-      "order": 3,
+      "order": 2,
       "text": "Anything that's Unicode!",
       "correct": true
     }
@@ -570,7 +609,7 @@
     "pk": 2,
     "fields": {
       "question": 2,
-      "order": 0,
+      "order": 1,
       "text": "Only letters and punctation",
       "correct": false
     }

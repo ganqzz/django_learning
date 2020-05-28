@@ -3,7 +3,7 @@
   <h1>Pizza Order List</h1>
 
   {% for order in orders %}
-    <div>
+    <div class="pizza">
       <a href="{% url 'pizza:detail' pk=order.pk %}">{{ order }}</a>
       <form method="post" action="{% url 'pizza:delete' pk=order.pk %}">
         {% csrf_token %}

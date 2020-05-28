@@ -48,7 +48,7 @@ class Like(Model):
 
     def __str__(self):
         return '{} like'.format(
-            self.bookmark.link if self.bookmark else self.comment.link
+            self.bookmark if self.bookmark else self.comment.link_str()
         )
 
     def clean(self):

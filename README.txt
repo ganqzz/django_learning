@@ -173,7 +173,20 @@ Django REST Framework
 
 - CORS (django-cors-headers)
 
+- Pagination適用におけるUnorderedObjectListWarning
+    - Model Metaにordering追加
+        常時適用される点に注意
+    - QuerySetにorder_by()追加
+        必要時のみ適用できる
+    - ModelViewSetにordering追加
+        OrderingFilter併用時のみ有効
+
+- Token authentication
+```
+python manage.py drf_create_token <user>
+```
+
 - OAuth2 (django-oauth-toolkit)
     * Application作成
-        <site>/locations/o/applications/
+        <site>/o/applications/
         もしくは、adminから直接作成

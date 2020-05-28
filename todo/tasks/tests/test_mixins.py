@@ -14,7 +14,5 @@ class SuccessTaskListMixinTestCase(TestCase):
 
     def test_get_success_url_returns_correct_url(self):
         target_url = reverse('tasks')
-
         result = self.target.get_success_url()
-
         self.assertEqual(target_url, result)

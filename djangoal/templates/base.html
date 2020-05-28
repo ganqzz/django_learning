@@ -27,8 +27,14 @@
   </ul>
 </nav>
 <div class="main">
-  {% block sidebar_content %}{% endblock %}
-  {% block body_content %}{% endblock %}
+  <div class="row">
+    <div class="col-left">
+      {% block sidebar_content %}{% endblock %}
+    </div>
+    <div class="col-right">
+      {% block body_content %}{% endblock %}
+    </div>
+  </div>
 </div>
 </body>
 </html>

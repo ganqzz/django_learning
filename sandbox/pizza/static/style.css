@@ -14,26 +14,52 @@ body {
   margin: 0;
 }
 
-a, a:hover, a:active, a:focus, a:visited {
+a {
   color: inherit;
   text-decoration: none;
+}
+
+input,
+select {
+  padding: 0.5rem;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+select {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  max-width: 100%;
+  overflow: auto;
+  resize: vertical;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid lightgray;
 }
 
 .navbar {
   background-color: #248745;
   color: #fff;
-  justify-content: space-between;
   height: 4rem;
   padding: 0 2%;
   position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .navbar a {
   color: inherit;
   text-decoration: none;
+  transition: background-color 200ms ease-in-out;
 }
 
 .navbar-brand {
@@ -95,9 +121,10 @@ a, a:hover, a:active, a:focus, a:visited {
 }
 
 .placeholder a {
+  display: block;
   color: inherit;
   text-decoration: none;
-  display: block;
+  transition: background-color 200ms ease-in-out;
 }
 
 .placeholder a:hover {
@@ -105,16 +132,54 @@ a, a:hover, a:active, a:focus, a:visited {
 }
 
 .btn {
+  display: inline-block;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  color: #8f71ff;
+  background-color: #fff;
+  border: 1px solid #8f71ff;
+  transition: background-color 200ms ease-in-out;
+}
+
+.btn:hover {
+  color: #fff;
+  background-color: #8f71ff;
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
 }
 
 .alert {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
+  background-color: rgba(0, 255, 0, .5);
 }
 
 .alert.alert-error {
-  background-color: red;
+  background-color: rgba(255, 0, 0, .5);
 }
 
 .alert.alert-warning {
-  background-color: yellow;
+  background-color: rgba(255, 255, 0, .7);
+}
+
+/*---*/
+
+.pizza {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.pizza > form,
+.pizza > a {
+  display: inline-block;
+}
+
+.pizza > a {
+  margin-right: 1rem;
+  color: tomato;
+}
+
+.pizza > a:hover {
+  text-decoration: underline;
 }

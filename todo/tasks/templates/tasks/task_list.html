@@ -8,15 +8,13 @@
     {% if tasks %}
       <ul>
         {% for task in tasks %}
-          {% include 'task_item.html' with task=task %}
+          {% include 'tasks/task_item.html' with task=task %}
         {% endfor %}
       </ul>
     {% else %}
       <p>You currently have no tasks.</p>
     {% endif %}
 
-    <a class="task__add levitate" href="{% url 'task-add' %}">
-      <span>+</span>
-    </a>
+    <a class="task__add levitate" href="{% url 'task-add' %}">+</a>
   </div>
 {% endblock %}

@@ -5,25 +5,26 @@ from django.contrib import admin
 from . import models
 
 
+# Admin actions
 def make_published(modeladmin, request, queryset):
-    queryset.update(status='p', is_live=True)
+    queryset.update(status='p', published=True)
 
 
 make_published.short_description = "Mark selected courses as Published"
 
 
 def make_in_review(modeladmin, request, queryset):
-    queryset.update(status='r', is_live=False)
+    queryset.update(status='r', published=False)
 
 
-make_in_review.short_description = "Mark selected courses as In Progress"
+make_in_review.short_description = "Mark selected courses as In Review"
 
 
 def make_in_progress(modeladmin, request, queryset):
-    queryset.update(status='i', is_live=False)
+    queryset.update(status='i', published=False)
 
 
-make_in_progress.short_description = "Mark selected courses as In Review"
+make_in_progress.short_description = "Mark selected courses as In Progress"
 
 admin.site.disable_action('delete_selected')  # globally disabled
 
@@ -33,9 +34,7 @@ class TextInline(admin.StackedInline):
     model = models.Text
 
     fieldsets = (
-        (None, {
-            'fields': (('title', 'order'), 'description', 'content')
-        }),
+        (None, {'fields': (('title', 'order'), 'description', 'content')}),
     )
 
 
@@ -47,6 +46,7 @@ class AnswerInline(admin.TabularInline):
     model = models.Answer
 
 
+# Filters
 class YearListFilter(admin.SimpleListFilter):
     title = 'year created'
     parameter_name = 'year'
@@ -73,37 +73,33 @@ class TopicListFilter(admin.SimpleListFilter):
         return (
             ('python', 'Python'),
             ('ruby', 'Ruby'),
-            ('java', 'Java')
+            ('java', 'Java'),
         )
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(
-                title__contains=self.value()
-            )
+            return queryset.filter(title__contains=self.value())
 
 
 @admin.register(models.Course)
 class CourseAdmin(admin.ModelAdmin):
-    inlines = [TextInline, QuizInline, ]
+    # inlines = [TextInline, QuizInline, ]
     search_fields = ['title', 'description']
-    list_filter = ['created_at', 'is_live', YearListFilter, TopicListFilter, ]
+    list_filter = ['created_at', 'published', YearListFilter, TopicListFilter, ]
     list_display = [
         'title',
         'created_at',
-        'is_live',
+        'published',
         'time_to_complete',  # from Course model
         'status',
     ]
-    list_editable = ['status']
+    # list_editable = ['status']
     actions = [make_published, make_in_review, make_in_progress]
 
     # Markdown preview
     class Media:
-        js = ('js/vendor/markdown.js', 'js/preview.js')
-        css = {
-            'all': ('css/preview.css',),
-        }
+        css = {'all': ('css/preview.css',)}
+        js = ('js/vendor/marked.min.js', 'js/preview.js')
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -111,7 +107,7 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['prompt']
     list_display = ['prompt', 'quiz', 'order']
     list_editable = ['quiz', 'order']
-    radio_fields = {'quiz': admin.HORIZONTAL}
+    # radio_fields = {'quiz': admin.HORIZONTAL}  # customizing for demo
     actions = ['delete_selected']  # globally disabled and allowed only in QuestionAdmin
 
 
@@ -126,15 +122,10 @@ class QuizAdmin(admin.ModelAdmin):
 class TextAdmin(admin.ModelAdmin):
     # fields = ['course', 'title', 'order', 'description', 'content']
     fieldsets = (
-        (None, {
-            'fields': ('course', 'title', 'order', 'description')
-        }),
-        ('Add content', {
-            'fields': ('content',),
-            'classes': ('collapse',)
-        })
+        (None, {'fields': ('course', 'title', 'order', 'description')}),
+        ('Add content', {'fields': ('content',), 'classes': ('collapse',)}),
     )
-    radio_fields = {"course": admin.VERTICAL}
+    # radio_fields = {"course": admin.VERTICAL}  # customizing for demo
 
 
 # admin.site.register(models.Course, CourseAdmin)
@@ -142,3 +133,4 @@ admin.site.register(models.Text, TextAdmin)
 admin.site.register(models.Quiz, QuizAdmin)
 admin.site.register(models.MultipleChoiceQuestion, QuestionAdmin)
 admin.site.register(models.TrueFalseQuestion, QuestionAdmin)
+admin.site.register(models.Answer)

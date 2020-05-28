@@ -12,14 +12,6 @@ class PackageAdmin(admin.ModelAdmin):
     inlines = (PackagePermissionInline,)
 
 
-class WishlistItemAdmin(admin.ModelAdmin):
-    model = WishlistItem
-
-
-class BookingAdmin(admin.ModelAdmin):
-    model = Booking
-
-
 admin.site.register(Package, PackageAdmin)
-admin.site.register(WishlistItem, WishlistItemAdmin)
-admin.site.register(Booking, BookingAdmin)
+admin.site.register(WishlistItem)
+admin.site.register(Booking)

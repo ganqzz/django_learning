@@ -1,34 +1,34 @@
 {% extends "courses/layout.html" %}
-{% load static %}
+{% load static course_extras %}
 
-{% comment %}{% block static %}
+{% block css %}
   <link rel="stylesheet" href="{% static 'courses/css/courses.css' %}">
-{% endblock %}{% endcomment %}
+{% endblock %}
 
 {% block title %}All{% endblock %}
 
+{% block breadcrumbs %}
+  <li>Courses</li>
+{% endblock %}
+
 {% block content %}
-  <div class="row columns">
+  <div class="row">
     {{ block.super }}
   </div>
-  <p>Total number of quizzes and steps: {{ total.total }}</p>
-  <div class="row">
+  {% if total.total %}
+    <p>Total number of quizzes and steps: {{ total.total }}</p>
+  {% endif %}
+  <div class="row row-wrap">
     {% for course in courses %}
-      <div class="small-6 columns">
-        <div class="callout">
-          <h5><a href="{% url 'courses:detail' pk=course.pk %}">{{ course.title }}</a></h5>
-          <div class="card-copy">
-            {{ course.description }}
-            {% if course.total_steps %}
-              <p><strong>Steps:</strong> {{ course.total_steps }}</p>
-            {% endif %}
-          </div>
+      <div class="callout col">
+        <h2><a href="{% url 'courses:detail' pk=course.pk %}">{{ course.title }}</a></h2>
+        <div class="card">
+          {{ course.description|markdown_to_html }}
         </div>
+        {% if course.total_steps %}
+          <div><strong>Steps:</strong> {{ course.total_steps }}</div>
+        {% endif %}
       </div>
-      {% if forloop.counter|divisibleby:"2" %}
-        </div>
-        <div class="row">
-      {% endif %}
     {% endfor %}
-    </div>
+  </div>
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Template tags and filters{% endblock %}
+{% block content %}
+  <h2>tags</h2>
+  <p>lorem: {% lorem %}</p>
+  <p>{% now "DATETIME_FORMAT" %}</p>
+  <div>
+    {% for row in dataset %}
+      {% if forloop.counter|divisibleby:"2" %}
+        <div style="background-color: mistyrose">{{ row }}</div>
+      {% else %}
+        <div style="background-color: lightcyan">{{ row }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>filters</h2>
+  <div>"hoge"|upper: {{ "hoge"|upper }}</div>
+  <div>"HoGe"|lower: {{ "HoGe"|lower }}</div>
+  <div>"hoge"|capfirst: {{ "hoge"|capfirst }}</div>
+  <div>"Hoge Fuga aWaWa"|slugify: {{ "Hoge Fuga aWaWa"|slugify }}</div>
+  <div>SHORT_DATE_FORMAT: {{ dt|date }}</div>
+  <div>DATETIME_FORMAT: {{ dt|date:"DATETIME_FORMAT" }}</div>
+  <div>SHORT_DATETIME_FORMAT: {{ dt|date:"SHORT_DATETIME_FORMAT" }}</div>
+  <div>TIME_FORMAT: {{ dt|time }}</div>
+  <div>PHP date() like format "jS F Y": {{ dt|date:"jS F Y" }}</div>
+
+  <h2>humanize</h2>
+  <div>0: {{ 0|apnumber }}</div>
+  <div>1: {{ 1|apnumber }}</div>
+  <div>2: {{ 2|apnumber }}</div>
+  <div>3: {{ 3|apnumber }}</div>
+  <div>300_000_000|intcomma: {{ 300_000_000|intcomma }}</div>
+  <div>300_000_000|intword: {{ 300_000_000|intword }}</div>
+  <div>1: {{ 1|ordinal }}</div>
+  <div>2: {{ 2|ordinal }}</div>
+  <div>3: {{ 3|ordinal }}</div>
+  <div>4: {{ 4|ordinal }}</div>
+  <div>naturalday "Today": {{ dt|naturalday }}</div>
+  <div>naturalday "Yesterday": {{ yesterday|naturalday }}</div>
+  <div>naturalday "Tomorrow": {{ tomorrow|naturalday }}</div>
+  <div>naturaltime "Now": {{ dt|naturaltime }}</div>
+{% endblock %}

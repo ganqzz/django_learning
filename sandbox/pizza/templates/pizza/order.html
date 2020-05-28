@@ -9,10 +9,10 @@
     <input type="submit" value="Order Pizza">
   </form>
 
-  <br><br>
-  Want more than one pizza?
+  <hr>
+  <h2>Want more than one pizza?</h2>
   <form action="{% url 'pizza:order-pizzas' %}" method="get">
-    {% csrf_token %}
+    {% csrf_token %}{% comment %}この場合は、データ変更なしなのでtokenはなくてもよい{% endcomment %}
     {{ multiple_form.as_p }}
     <input type="submit" value="Get Pizzas">
   </form>

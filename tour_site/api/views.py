@@ -3,7 +3,7 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 from rest_framework import viewsets
 from rest_framework.filters import BaseFilterBackend, SearchFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from api.models import Package, PackagePermission, WishlistItem, Booking
@@ -46,7 +46,7 @@ class PackageViewSet(viewsets.ModelViewSet):
 
 class WishlistItemViewSet(viewsets.ViewSet):
     queryset = WishlistItem.objects.all()
-    permission_classes = [BasePermission]
+    permission_classes = [AllowAny]
     session_id = 'wishlist-items'
 
     def destroy(self, request, pk=None):
@@ -114,11 +114,11 @@ class PublicPackageViewSet(viewsets.ModelViewSet):
 
 
 class BookingPagination(PageNumberPagination):
-    page_size = 50
+    page_size = 20
 
 
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = [BasePermission]
+    permission_classes = [AllowAny]
     pagination_class = BookingPagination

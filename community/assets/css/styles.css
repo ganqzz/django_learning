@@ -16,7 +16,7 @@ body {
   font-size: 15px;
 }
 
-a, a:hover, a:active, a:focus, a:visited {
+a {
   color: inherit;
   text-decoration: none;
 }
@@ -129,14 +129,14 @@ footer {
   transition: background-color 200ms ease-in-out;
 }
 
-.btn.btn-primary:hover {
-  background-color: #6b56bf;
-}
-
 .btn.btn-primary {
   background-color: #8f71ff;
   border: 1px solid #866ec7;
   color: #fff;
+}
+
+.btn.btn-primary:hover {
+  background-color: #6b56bf;
 }
 
 .btn.btn-outline {

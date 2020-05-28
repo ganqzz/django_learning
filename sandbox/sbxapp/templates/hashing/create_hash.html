@@ -9,22 +9,12 @@
 
   <h3 id="quickhash"></h3>
 
-  <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"></script>
   <script>
-    $('#id_text').keyup(function() {
-      var text = $(this).val();
-
-      $.ajax({
-        url: '{% url 'sbxapp:hashing-quickhash' %}',
-        data: {'text': text},
-        dataType: 'json',
-        success: function(data) {
-          $('#quickhash').text(data['hash']);
-        }
-      });
-    });
+    const quickhash = document.getElementById('quickhash');
+    document.getElementById('id_text').onkeyup = (e) => {
+      fetch('{% url "sbxapp:hashing-quickhash" %}?text=' + e.target.value)
+        .then(res => res.json())
+        .then(json => quickhash.textContent = json['hash']);
+    };
   </script>
 {% endblock %}

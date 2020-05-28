@@ -70,7 +70,7 @@ def create_sample_data(apps, schema_editor):
     street_addresses = ['111 aaa aaa', '222 bbb bbb', '333 ccc ccc', '444 ddd ddd', '555 eee eee']
     cities = ['Tokyo', 'NewYork', 'Paris', 'London', 'Sidney']
 
-    for i in range(200):
+    for i in range(100):
         owner = choice(users)
         category = choice(categories)
         package = Package(

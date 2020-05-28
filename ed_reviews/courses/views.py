@@ -1,14 +1,10 @@
 from django.shortcuts import get_object_or_404
-
-from rest_framework import generics, status
-from rest_framework import mixins
-from rest_framework import permissions
-from rest_framework import viewsets
+from rest_framework import generics, status, mixins, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 from . import models
 from . import serializers
@@ -46,7 +42,7 @@ class ListCourse(APIView):
 class ListCreateCourse(generics.ListCreateAPIView):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
-    # UnorderedObjectListWarning on Paginating
+    # "UnorderedObjectListWarning" on Paginating
 
 
 class RetrieveUpdateDestroyCourse(generics.RetrieveUpdateDestroyAPIView):
@@ -93,8 +89,8 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
     filter_backends = (OrderingFilter,)
-    ordering_fields = ('id', 'title',)
-    ordering = ('title',)
+    ordering_fields = ('id', 'title',)  # OrderingFilter
+    ordering = ('title',)  # UnorderedObjectListWarning
 
     @action(methods=['get'], detail=True)
     def reviews(self, request, pk=None):

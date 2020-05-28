@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Top</title>
-</head>
-<body>
-<p>Today is the {% now "jS F Y" %}</p>
-<p><a href="{% url 'sbxapp:home' %}">Sandbox</a></p>
-<p><a href="{% url 'pizza:home' %}">Pizza</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Top{% endblock %}
+{% block content %}
+  <p><a href="{% url 'admin:index' %}">Admin Site</a></p>
+  <p><a href="{% url 'sbxapp:home' %}">Sandbox</a></p>
+  <p><a href="{% url 'pizza:home' %}">Pizza</a></p>
+{% endblock %}

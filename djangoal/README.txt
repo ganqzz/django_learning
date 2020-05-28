@@ -1,4 +1,8 @@
-- Django CBV
+# Django Class Based Views (CBVs)
+
+- カスタマイズし過ぎに注意する
+- CreateView/UpdateView　(ModelFormMixin)
+   自動で作成されたFormクラスが使われる（カスタマイズが不要の場合）
 
 - Password
 Username: ganq

@@ -8,6 +8,10 @@ from api.models import Package, PackagePermission
 from api.serializers import BookingSerializer
 
 
+def create_user(username):
+    return User.objects.create(username=username)
+
+
 def create_access_token(user):
     token_expiration_time = timezone.now() + timedelta(minutes=60)
     token = get_access_token_model().objects.create(
@@ -24,7 +28,7 @@ def create_access_token(user):
 
 
 def auth_header(token):
-    return {'HTTP_AUTHORIZATION': 'Bearer {}'.format(token)}
+    return {'HTTP_AUTHORIZATION': f'Bearer {token}'}
 
 
 class PackageViewSetTestCase(APITestCase):
@@ -32,7 +36,7 @@ class PackageViewSetTestCase(APITestCase):
         response = self.client.get('/api/v1/packages/')
         self.assertEqual(response.status_code, 401)
 
-        user = User.objects.create(username='user')
+        user = create_user('user')
         token = create_access_token(user)
         response = self.client.get('/api/v1/packages/', **auth_header(token))
         self.assertEqual(response.status_code, 200)
@@ -45,12 +49,12 @@ class PackageViewSetTestCase(APITestCase):
 
 class PackagePermissionTestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create(username='user')
+        self.user = create_user('user')
         self.auth_user = auth_header(create_access_token(self.user))
         self.package = Package.objects.create(
             category='a', name='package', price=0.0, rating='medium', tour_length=1
         )
-        self.other_user = User.objects.create(username='other_user')
+        self.other_user = create_user('other_user')
         self.auth_other_user = auth_header(create_access_token(self.other_user))
         self.other_package = Package.objects.create(
             category='a', name='other_package', price=1.0, rating='medium', tour_length=1
@@ -85,8 +89,8 @@ class PackagePermissionTestCase(APITestCase):
 
 class CachingTestCase(APITestCase):
     def test_wishlist_cache(self):
-        package = Package.objects.create(category='a', name='package', price=0.0, rating='medium',
-                                         tour_length=1)
+        package = Package.objects.create(
+            category='a', name='package', price=0.0, rating='medium', tour_length=1)
         self.assertIsNone(cache.get('wishlist:wishlist-items'))
         response = self.client.get('/api/v1/wishlist/')
         self.assertListEqual(response.data, [])
@@ -105,29 +109,30 @@ class SortingFilteringTestCase(APITestCase):
         Package.objects.all().delete()
 
     def test_sorting_and_filtering(self):
-        discount_package = Package.objects.create(category='a', name='a', price=1.0, rating='easy',
-                                                  tour_length=1)
-        expensive_package = Package.objects.create(category='b', name='b', price=99.0,
-                                                   rating='medium', tour_length=2)
-        user = User.objects.create(username='user')
+        discount_package = Package.objects.create(
+            category='a', name='a', price=1.0, rating='easy', tour_length=1)
+        expensive_package = Package.objects.create(
+            category='b', name='b', price=99.0, rating='medium', tour_length=2)
+        user = create_user('user')
         token = create_access_token(user)
+        auth = auth_header(token)
 
-        response = self.client.get('/api/v1/public/packages/', **auth_header(token))
-        ids = list(map(lambda result: result['id'], response.data['results']))
+        response = self.client.get('/api/v1/public/packages/', **auth)
+        ids = [r['id'] for r in response.data['results']]
         self.assertListEqual(ids, [expensive_package.id, discount_package.id])
 
-        response = self.client.get('/api/v1/public/packages/?search=a', **auth_header(token))
-        ids = list(map(lambda result: result['id'], response.data['results']))
+        response = self.client.get('/api/v1/public/packages/?search=a', **auth)
+        ids = [r['id'] for r in response.data['results']]
         self.assertListEqual(ids, [discount_package.id])
 
-        response = self.client.get('/api/v1/public/packages/?price_min=50.00', **auth_header(token))
-        ids = list(map(lambda result: result['id'], response.data['results']))
+        response = self.client.get('/api/v1/public/packages/?price_min=50.00', **auth)
+        ids = [r['id'] for r in response.data['results']]
         self.assertListEqual(ids, [expensive_package.id])
 
 
 class ValidationTestCase(APITestCase):
     def test_invalid_start_date_returns_error(self):
-        user = User.objects.create(username='user')
+        user = create_user('user')
         auth = auth_header(create_access_token(user))
 
         data = {

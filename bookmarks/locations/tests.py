@@ -2,7 +2,7 @@ from datetime import timedelta
 from io import BytesIO
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.db.models.aggregates import Count
 from django.test import TestCase
 from django.test import tag
@@ -15,6 +15,8 @@ from rest_framework.test import APITestCase
 
 from .models import Bookmark, Note, Comment, Like
 from .views import BookmarkViewSet
+
+BOOKMARKS = '/locations/bookmarks/'
 
 
 def set_up_bookmarks():
@@ -34,8 +36,7 @@ def set_up_bookmarks():
     like2.save()
 
 
-def create_user_access_token():
-    user = get_user_model().objects.create(username='user')
+def create_access_token(user):
     token_expiration_time = timezone.now() + timedelta(minutes=60)
     token = get_access_token_model().objects.create(
         user=user,
@@ -51,20 +52,18 @@ def create_user_access_token():
 
 
 def auth_header(token):
-    return {
-        'HTTP_AUTHORIZATION': 'Bearer {}'.format(token)
-    }
+    return {'HTTP_AUTHORIZATION': f'Bearer {token}'}
 
 
 class BookmarkViewSetIntegrationTest(APITestCase):
     def setUp(self):
-        super().setUp()
         set_up_bookmarks()
-        self.auth_header = auth_header(create_user_access_token())
+        user = User.objects.create(username='user')
+        self.auth_header = auth_header(create_access_token(user))
 
     @tag('integration_test')
     def test_get(self):
-        result = self.client.get('/locations/bookmarks/', **self.auth_header)
+        result = self.client.get(BOOKMARKS, **self.auth_header)
         stream = BytesIO(result.content)
         data = JSONParser().parse(stream)  # paginationが有効な時は、dictになることに注意
         self.assertEqual(len(data), 6)  # migration:3 + setUp:3
@@ -74,18 +73,17 @@ class BookmarkViewSetIntegrationTest(APITestCase):
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 0)
 
-        result = self.client.post('/locations/bookmarks/6/add_like/', **self.auth_header)
+        result = self.client.post(f'{BOOKMARKS}6/add_like/', **self.auth_header)
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 1)
 
-        result = self.client.post('/locations/bookmarks/6/add_like/', **self.auth_header)
+        result = self.client.post(f'{BOOKMARKS}6/add_like/', **self.auth_header)
         bookmark = Bookmark.objects.annotate(num_likes=Count('likes')).get(id=6)
         self.assertEqual(bookmark.num_likes, 2)
 
 
 class BookmarkViewSetUnitTest(TestCase):
     def setUp(self):
-        super().setUp()
         set_up_bookmarks()
 
     @tag('unit_test')
@@ -95,7 +93,7 @@ class BookmarkViewSetUnitTest(TestCase):
     def test_add_like_ut(self, l_patch, go_patch, r_patch):
         factory = APIRequestFactory()
         request = factory.post(
-            '/locations/bookmarks/6/add_like/', {}
+            f'{BOOKMARKS}6/add_like/', {}
         )
         view = BookmarkViewSet()
         result = view.add_like(request)

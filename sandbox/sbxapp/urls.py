@@ -9,6 +9,7 @@ urlpatterns = [
     path('hello/<name>/', views.hello, name='hello'),
     path('dt/', views.dt_all),
     path('dt2/', views.dt_all2),
+    path('tags_filters/', views.tags_filters, name='tags_filters'),
     path('form_example/', views.form_example, name='form-example'),
     path('upload/', views.upload_file, name='upload-file'),
 

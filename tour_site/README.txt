@@ -12,3 +12,6 @@
 
 - React App deployment with Django
     * Productionでは、buildディレクトリを他のstaticファイルと同様に扱う（STATIC_ROOT配下）。
+
+- User
+    * admin: admin

@@ -10,19 +10,32 @@ from . import forms
 from . import models
 
 
+# TODO:全般的にformエラー処理が足りない
+
+
 def course_list(request):
-    courses = models.Course.objects.all().annotate(
+    courses = models.Course.objects.all()
+
+    # filters
+    term = request.GET.get('q')
+    if term:
+        courses = courses.filter(
+            Q(title__icontains=term) | Q(description__icontains=term),
+        )
+    if request.GET.get('published'):
+        courses = courses.filter(published=True)
+
+    # aggregate
+    courses = courses.annotate(
         total_steps=Count('text', distinct=True) + Count('quiz', distinct=True)
     )
     total = courses.aggregate(total=Sum('total_steps'))
-    # output = ', '.join(str(course) for course in courses)
-    # return HttpResponse(output)
     return render(request, 'courses/course_list.html', {'courses': courses,
                                                         'total': total})
 
 
 def course_detail_old(request, pk):
-    # course = Course.objects.get(pk=pk)  # Not found => 500
+    """N+1 problem"""
     course = get_object_or_404(models.Course, pk=pk)
     steps = sorted(chain(course.text_set.all(), course.quiz_set.all()),
                    key=lambda step: step.order)
@@ -31,16 +44,16 @@ def course_detail_old(request, pk):
 
 
 def course_detail(request, pk):
+    """Solution for N+1 problem"""
     try:
         course = models.Course.objects.prefetch_related(
             'quiz_set', 'text_set', 'quiz_set__question_set'
-        ).get(pk=pk, published=True)
+        ).get(pk=pk)
     except models.Course.DoesNotExist:
         raise Http404
     else:
-        steps = sorted(chain(
-            course.text_set.all(), course.quiz_set.all()
-        ), key=lambda step: step.order)
+        steps = sorted(chain(course.text_set.all(), course.quiz_set.all()),
+                       key=lambda step: step.order)
     return render(request, 'courses/course_detail.html', {'course': course,
                                                           'steps': steps})
 
@@ -52,14 +65,9 @@ def text_detail(request, course_pk, step_pk):
 
 def quiz_detail(request, course_pk, step_pk):
     try:
-        step = models.Quiz.objects.select_related(
-            'course'
-        ).prefetch_related(
-            'question_set', 'question_set__answer_set'
-        ).get(
-            course_id=course_pk, pk=step_pk,
-            course__published=True
-        )
+        step = models.Quiz.objects.select_related('course') \
+            .prefetch_related('question_set', 'question_set__answer_set') \
+            .get(course_id=course_pk, pk=step_pk)
     except models.Quiz.DoesNotExist:
         raise Http404
     else:
@@ -69,6 +77,7 @@ def quiz_detail(request, course_pk, step_pk):
 @login_required()
 def quiz_create(request, course_pk):
     course = get_object_or_404(models.Course, pk=course_pk)
+    form = None
 
     if request.method == 'POST':
         form = forms.QuizForm(request.POST)
@@ -78,9 +87,10 @@ def quiz_create(request, course_pk):
             quiz.save()
             messages.add_message(request, messages.SUCCESS, "Quiz added")
             return HttpResponseRedirect(quiz.get_absolute_url())
+        else:
+            messages.add_message(request, messages.ERROR, 'Something wrong')
 
-    # except POST (GET, ...)
-    form = forms.QuizForm()
+    form = form or forms.QuizForm()  # invalid => request.POST as old input
     return render(request, 'courses/quiz_form.html', {'form': form, 'course': course})
 
 
@@ -94,8 +104,10 @@ def quiz_edit(request, course_pk, quiz_pk):
             quiz = form.save()
             messages.success(request, "Updated {}".format(quiz.title))
             return HttpResponseRedirect(quiz.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
-    form = forms.QuizForm(instance=quiz)
+    form = forms.QuizForm(instance=quiz)  # invalid => reset
     return render(request, 'courses/quiz_form.html', {'form': form, 'course': quiz.course})
 
 
@@ -107,6 +119,8 @@ def create_question(request, quiz_pk, question_type):
         form_class = forms.TrueFalseQuestionForm
     else:
         form_class = forms.MultipleChoiceQuestionForm
+
+    form = None
 
     if request.method == 'POST':
         form = form_class(request.POST)
@@ -122,8 +136,10 @@ def create_question(request, quiz_pk, question_type):
                 answer.save()
             messages.success(request, "Question added")
             return HttpResponseRedirect(quiz.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
-    form = form_class()
+    form = form or form_class()
     answer_forms = forms.AnswerInlineFormSet(queryset=models.Answer.objects.none())  # no answer
     return render(request, 'courses/question_form.html',
                   {'form': form, 'quiz': quiz, 'formset': answer_forms})
@@ -143,7 +159,7 @@ def edit_question(request, quiz_pk, question_pk):
     if request.method == 'POST':
         form = form_class(request.POST, instance=question)
         answer_forms = forms.AnswerInlineFormSet(request.POST,
-                                                 queryset=models.Answer.objects.all())
+                                                 queryset=question.answer_set.all())
         if form.is_valid() and answer_forms.is_valid():
             question = form.save()
             answers = answer_forms.save(commit=False)  # 新規Answerが含まれる可能性があるため
@@ -154,9 +170,11 @@ def edit_question(request, quiz_pk, question_pk):
                 answer.save()
             messages.success(request, "Question updated")
             return HttpResponseRedirect(question.quiz.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
     form = form_class(instance=question)
-    answer_forms = forms.AnswerInlineFormSet(queryset=models.Answer.objects.all())
+    answer_forms = forms.AnswerInlineFormSet(queryset=question.answer_set.all())
     return render(request, 'courses/question_form.html',
                   {'form': form, 'quiz': question.quiz, 'formset': answer_forms})
 
@@ -164,6 +182,7 @@ def edit_question(request, quiz_pk, question_pk):
 @login_required()
 def create_answer(request, question_pk):
     question = get_object_or_404(models.Question, pk=question_pk)
+    form = None
 
     if request.method == 'POST':
         form = forms.AnswerForm(request.POST)
@@ -171,59 +190,59 @@ def create_answer(request, question_pk):
             answer = form.save(commit=False)
             answer.question = question
             answer.save()
-            messages.add_message(request, messages.SUCCESS, "Answer added")
+            messages.success(request, "Answer added")
             return HttpResponseRedirect(question.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
-    form = forms.AnswerForm()
+    form = form or forms.AnswerForm()
     return render(request, 'courses/answer_form.html', {'form': form, 'question': question})
 
 
 @login_required()
 def edit_answer(request, question_pk, answer_pk):
     answer = get_object_or_404(models.Answer, pk=answer_pk)
+    form = None
 
     if request.method == 'POST':
         form = forms.AnswerForm(instance=answer, data=request.POST)  # instanceの設定を忘れないように
         if form.is_valid():
             answer = form.save()
-            messages.add_message(request, messages.SUCCESS, "Answer updated")
+            messages.success(request, "Answer updated")
             return HttpResponseRedirect(answer.question.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
-    form = forms.AnswerForm(instance=answer)
+    form = form or forms.AnswerForm(instance=answer)
     return render(request, 'courses/answer_form.html', {'form': form, 'question': answer.question})
 
 
-# 作成・更新をまとめて行える
+# Formset
 @login_required()
-def answer_form(request, question_pk):
+def answers_form(request, question_pk):
     question = get_object_or_404(models.Question, pk=question_pk)
+    queryset = question.answer_set.all()
+    formset = None
 
     if request.method == 'POST':
-        formset = forms.AnswerFormSet(request.POST, queryset=question.answer_set.all())
-
+        formset = forms.AnswerFormSet(request.POST, queryset=queryset)
         if formset.is_valid():
-            answerset = formset.save(commit=False)
-            for answer in answerset:
+            answers = formset.save(commit=False)
+            for answer in formset.deleted_objects:  # delete
+                answer.delete()
+            for answer in answers:
                 answer.question = question
                 answer.save()
-            messages.success(request, "Answers added")
+            messages.success(request, "Answers updated")
             return HttpResponseRedirect(question.get_absolute_url())
+        else:
+            messages.error(request, 'Something wrong')
 
-    formset = forms.AnswerFormSet(queryset=question.answer_set.all())
-    return render(request, 'courses/answers_form.html', {'formset': formset, 'question': question})
+    formset = formset or forms.AnswerFormSet(queryset=queryset)
+    return render(request, 'courses/answers_form.html',
+                  {'formset': formset, 'question': question})
 
 
 def courses_by_teacher(request, teacher):
-    # teacher = models.User.objects.get(username=teacher)
-    # courses = teacher.course_set.all()
     courses = models.Course.objects.filter(teacher__username=teacher)
-    return render(request, 'courses/course_list.html', {'courses': courses})
-
-
-def search(request):
-    term = request.GET.get('q')
-    courses = models.Course.objects.filter(
-        Q(title__icontains=term) | Q(description__icontains=term),
-        published=True
-    )
     return render(request, 'courses/course_list.html', {'courses': courses})

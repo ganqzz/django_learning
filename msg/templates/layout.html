@@ -21,12 +21,9 @@
   </div>
   <ul class="navbar-menu">
     {% if user.is_authenticated %}
-      <li class="navbar-menu-item">
-        <a href="#" data-modal-open="modal-post-form">New Post</a>
-      </li>
-      <li class="navbar-menu-item">
-        <a href="{% url 'communities:list' %}">Communities</a>
-      </li>
+      <li class="navbar-menu-item"><a href="#" data-modal-open="modal-post-form">New Post</a></li>
+      <li class="navbar-menu-item"><a href="{% url 'posts:all' %}">Posts</a></li>
+      <li class="navbar-menu-item"><a href="{% url 'communities:list' %}">Communities</a></li>
       <li class="navbar-menu-item"><a href="{% url 'logout' %}">Log out</a></li>
     {% else %}
       <li class="navbar-menu-item"><a href="{% url 'posts:all' %}">Posts</a></li>

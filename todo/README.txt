@@ -13,8 +13,9 @@
 - Python: 2.x -> 3.x
 - Django: 1.x -> 3.x
 - django-autofixture -> factory-boy, Faker
-- Bootstrap3 -> Bootstrap4, Font Awesome
+- Bootstrap3 -> Bootstrap4, Bootstrap icons
 - django-widget-tweaks -> django-crispy-forms
+- clean up: forms, views, templates
 
 
 ## Further more

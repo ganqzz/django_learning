@@ -2,7 +2,7 @@
 
 - Built-in
     * django.contrib.auth.urls
-    * override default login template => registration/login.html
+    * override default Auth templates => registration/*.html
     * scratch LoginView, LogoutView (eventually not in use)
     * SignUpView
     * default LoginView, LogoutView

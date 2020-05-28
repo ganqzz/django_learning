@@ -6,7 +6,7 @@
   <form action="{% url 'pizza:detail' pk=pizzaform.instance.pk %}" method="post" novalidate>
     {% csrf_token %}
     {{ pizzaform.as_p }}
-    <input type="submit" value="Edit Order">
+    <input type="submit" value="Update">
   </form>
   <form action="{% url 'pizza:delete' pk=pizzaform.instance.pk %}" method="post">
     {% csrf_token %}
